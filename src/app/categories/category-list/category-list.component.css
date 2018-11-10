@@ -1,0 +1,49 @@
+a.list-group-item {
+    height:auto;
+    min-height:220px;
+    width: 80%;
+}
+a.list-group-item.active small {
+    color:#fff;
+   
+}
+.stars {
+    margin:20px auto 1px;    
+}
+.container{
+    width: 90%;
+    
+    
+}
+
+.pull-left{
+    margin: 40px auto;
+}
+.list-group-item-heading{
+    margin: 20px auto;
+}
+.list-group-item-text{
+    margin: 40px auto;
+}
+.btn{
+    margin: 50% auto;
+
+}
+h1{
+    font-family: 'Baloo Bhaijaan', cursive;
+    color: #fff;   
+}
+
+p{
+    font-family: 'Baloo Bhaijaan', cursive;
+    color: #fff;
+    font-size: 24px; 
+}
+.well{
+    padding: 1.5%;
+    width: 665px;
+    margin: 0 auto;
+}
+img{
+    border-radius: 6px;
+}
