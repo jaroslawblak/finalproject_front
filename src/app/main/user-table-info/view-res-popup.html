@@ -1,0 +1,52 @@
+<div class="row" style="width: 90%; margin: auto">
+  <div class="table-responsive" style="padding: 15px; max-width: 80%; margin: 0 auto">
+    <table id="edit-table" class="table exotic-table">
+      <thead>
+      <tr class="text-center">
+        <th colspan="2">Edit resource</th>
+      </tr>
+      </thead>
+      <tbody class="text-center">
+      <tr class="text-center">
+        <td>First name: </td>
+        <td>
+          <div class="ui-g-12 ui-md-4">
+            <div class="ui-inputgroup">
+              <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+              <input type="text" pInputText placeholder="Username">
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr class="text-center">
+        <td>Last name: </td>
+        <td>{{user.lastName}}</td>
+      </tr>
+      <tr class="text-center">
+        <td>Email: </td>
+        <td>{{user.email}}</td>
+      </tr>
+      <tr class="text-center">
+        <td>Added:</td>
+        <td>{{user.addTime}}</td>
+      </tr>
+      <tr class="text-center">
+        <td>State:</td>
+        <td>{{user.state}}</td>
+      </tr>
+      <tr class="text-center">
+        <td>Type:</td>
+        <td>{{user.type}}</td>
+      </tr>
+      <tr class="text-center">
+        <td>Parent User:</td>
+        <td>{{user.parentUser}}</td>
+      </tr>
+      <tr class="text-center">
+        <td>Note:</td>
+        <td>{{user.note}}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('[data-toggle="popover"]').popover({title: "Payment Modes", html: true, placement: "left"});
+  });
+</script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+
+    <div class="row" style="height: 250px; width: 90%; margin: auto; coverflow: auto">
+      <div class="table-responsive" style="padding: 15px; max-width: 80%; margin: 0 auto">
+        <table id="main-table" class="table exotic-table">
+          <thead>
+          <tr class="text-center">
+            <th colspan="2">User Information</th>
+          </tr>
+          </thead>
+          <tbody class="text-center">
+          <!--<tr class="text-center" style="height: 300px">-->
+            <!--<td colspan="2">Image</td>-->
+          <!--</tr>-->
+          <tr class="text-center">
+            <td>ID: </td>
+            <td>{{user.id}}</td>
+          </tr>
+          <tr class="text-center">
+            <td>First name: </td>
+            <td>{{user.firstName}}</td>
+          </tr>
+          <tr class="text-center">
+            <td>Last name: </td>
+            <td>{{user.lastName}}</td>
+          </tr>
+          <tr class="text-center">
+            <td>Email: </td>
+            <td>{{user.email}}</td>
+          </tr>
+          <tr class="text-center">
+            <td>Added:</td>
+            <td>{{user.addTime}}</td>
+          </tr>
+          <tr class="text-center">
+            <td>State:</td>
+            <td>{{user.state}}</td>
+          </tr>
+          <tr class="text-center">
+            <td>Type:</td>
+            <td>{{user.type}}</td>
+          </tr>
+          <tr class="text-center">
+            <td>Parent User:</td>
+            <td>{{user.parentUser}}</td>
+          </tr>
+          <tr class="text-center">
+            <td>Note:</td>
+            <td>{{user.note}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+
