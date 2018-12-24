@@ -1,25 +1,25 @@
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Baloo+Bhaijaan|Roboto|Ubuntu" rel="stylesheet">
-<!------ Include the above in your HEAD tag ---------->
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaijaan|Roboto|Ubuntu" rel="stylesheet">
+  <!------ Include the above in your HEAD tag ---------->
+</head>
 
 <div class="container">
-    <div class="row">
-            <h1 class="text-center">Categories</h1>
-            
-		
-        
-        <!-- You can now use your library component in app.component.html -->
-    <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">
-        
-            <div ngxSlickItem *ngFor="let slide of slides" class="slide">
-                    <p>{{slide.name}}</p>
-                    <div class="well">
-                  <img src="{{ slide.imagePath }}" alt="">
-                </div>
-            </div>
-        </ngx-slick>
-        </div>
+  <div class="row">
+    <h1 class="text-center">Categories</h1>
 
+
+    <!-- You can now use your library component in app.component.html -->
+    <ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">
+
+      <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+        <p>{{slide.name}}</p>
+        <div class="well">
+          <img src="{{ slide.imagePath }}" alt="">
+        </div>
+      </div>
+    </ngx-slick>
+  </div>
 </div>

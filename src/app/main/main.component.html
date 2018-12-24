@@ -35,9 +35,7 @@
   });
 </script>
 </head>
-  <div class="scrollbar" id="style-14">
-  <div class="force-overflow"></div>
-</div>
+<div class="row">
   <nav class="navbar navbar-inverse sidebar" role="navigation">
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
@@ -61,15 +59,16 @@
       </div>
     </div>
   </nav>
-<div class="content">
-</div>
-<div class="row">
+<div class="main">
+  <div class="content">
   <div *ngIf="listIsOn; else profile">
     <app-user-table-info></app-user-table-info>
   </div>
   <ng-template #profile>
     <app-user-profile></app-user-profile>
   </ng-template>
+</div>
+</div>
 </div>
 
 

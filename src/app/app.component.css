@@ -1,9 +1,39 @@
-.all{
-    text-align:center;
-    background-image: url('../assets/images/background.jpeg');
-    min-height:100vh;
-    width: 100%;
-    height: 100%;
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+  background-color: #282828;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #F5F5F5;
+}
+html{
+  width: 100%;
+  height: 100vh;
+  margin: 0px;
 
 }
+body{
+  width: 100%;
+  min-height: 100vh;
+  margin: 0px;
+  overflow: hidden;
+  background-image: url('../assets/images/background.jpeg');
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.all {
+
+}
+
+@media (min-width: 1330px) {
+  .all{
+    text-align: center;
+    margin: 0px 350px 0 350px;
+  }
+}
+
 
