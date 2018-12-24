@@ -18,8 +18,9 @@ export class UserTableInfoComponent implements OnInit {
   resources: Resource[];
   userResources: UserResource[];
   user: User;
-  displayEdit: boolean = true;
-  date1 :any;
+  displayEdit: boolean = false;
+  displayView: boolean = false;
+  date1: any;
 
   constructor(private userResourcesService: UserResourcesService) {
     this.resource = new Resource();
@@ -40,12 +41,16 @@ export class UserTableInfoComponent implements OnInit {
     });
   }
 
-  showEdit(showEdit: boolean) {
-    if (showEdit) {
-       this.displayEdit = showEdit;
-    } else {
-      this.displayEdit = showEdit;
-    }console.log(this.displayEdit);
+  showEdit() {
+    this.displayView = false;
+    this.displayEdit = true;
+   console.log(this.displayEdit);
+  }
+  showView(id: number) {
+    this.displayView = true;
+    this.displayEdit = false;
+    console.log(this.displayEdit);
+    console.log(id);
   }
 
   loadResources(userResource: UserResource[]): Resource[] {

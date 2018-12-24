@@ -9,12 +9,26 @@ import { Router } from '@angular/router';
 })
 export class MainComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  listIsOn: boolean = true;
 
+  constructor(private router: Router) {
+
+  }
   ngOnInit() {
   }
 
   showProfile = function () {
-    this.router.navigateByUrl('main/profile');
+    this.listIsOn  = false;
+    this.router.navigateByUrl('main');
+  };
+  showHome = function () {
+    this.listIsOn  = true;
+    this.router.navigateByUrl('main');
+  };
+  showAdminPanel = function () {
+    this.router.navigateByUrl('main/admin');
+  };
+  logout = function () {
+    this.router.navigateByUrl('/login');
   };
 }

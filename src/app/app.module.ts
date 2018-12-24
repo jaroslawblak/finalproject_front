@@ -20,6 +20,7 @@ import { UserProfileComponent } from './main/user-profile/user-profile.component
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DialogModule} from 'primeng/dialog';
 import {CalendarModule} from 'primeng/calendar';
+import { UserResDetailComponent } from './main/user-res-detail/user-res-detail.component';
 
 
 
@@ -46,6 +47,7 @@ export const routing = RouterModule.forRoot(routes);
     HomeComponent,
     UserTableInfoComponent,
     UserProfileComponent,
+    UserResDetailComponent,
   ],
   imports: [
     BrowserModule,
