@@ -4,10 +4,20 @@
   margin: 0px;
 }
 
+
+.row{
+  overflow: hidden;
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+}
+
 /*Remove rounded coners*/
 
 nav.sidebar.navbar {
   border-radius: 0px;
+  margin-top: 55px;
+
 }
 
 nav.sidebar, .main{
@@ -22,28 +32,28 @@ nav.sidebar, .main{
   padding: 10px 10px 0 10px;
 }
 
+
 /* .....NavBar: Icon only with coloring/layout.....*/
 
 /*small/medium side display*/
 @media (min-width: 768px) {
-
+  .container{
+    padding: 0 10px 0 10px;
+    margin: 0 0px;
+    position: fixed;
+  }
   /*Allow main to be next to Nav*/
   .main{
     position: absolute;
     width: calc(100% - 40px); /*keeps 100% minus nav size*/
-    margin-left: 40px;
     float: right;
-  }
-
-  /*lets nav bar to be showed on mouseover*/
-  nav.sidebar:hover + .main{
-    margin-left: 200px;
   }
 
   /*Center Brand*/
   nav.sidebar.navbar.sidebar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
     margin-left: 0px;
   }
+
   /*Center Brand*/
   nav.sidebar .navbar-brand, nav.sidebar .navbar-header{
     text-align: center;
@@ -66,18 +76,6 @@ nav.sidebar, .main{
     border-bottom: 1px #e5e5e5 solid;
   }
 
-  /* Colors/style dropdown box*/
-  nav.sidebar .navbar-nav .open .dropdown-menu {
-    position: static;
-    float: none;
-    width: auto;
-    margin-top: 0;
-    background-color: transparent;
-    border: 0;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-  }
-
   /*allows nav box to use 100% width*/
   nav.sidebar .navbar-collapse, nav.sidebar .container-fluid{
     padding: 0 0px 0 0px;
@@ -92,7 +90,7 @@ nav.sidebar, .main{
   nav.sidebar{
     width: 200px;
     height: 100%;
-    margin-left: -140px;
+    margin-left: -170px;
     float: left;
     z-index: 8000;
     margin-bottom: 0px;
@@ -105,7 +103,7 @@ nav.sidebar, .main{
 
   /* Move nav to full on mouse over*/
   nav.sidebar:hover{
-    margin-left: 0px;
+    margin-left: -10px;
   }
   /*for hiden things when navbar hidden*/
   .forAnimate{
@@ -115,12 +113,12 @@ nav.sidebar, .main{
 
 /* .....NavBar: Fully showing nav bar..... */
 
-@media (min-width: 1330px) {
+@media (min-width: 1620px) {
 
   /*Allow main to be next to Nav*/
   .main{
-    width: calc(100% - 200px); /*keeps 100% minus nav size*/
-    margin-left: 200px;
+    width: calc(100% - 370px); /*keeps 100% minus nav size*/
+    margin-left: 300px;
   }
 
   /*Show all nav*/
@@ -128,6 +126,11 @@ nav.sidebar, .main{
     margin-left: 0px;
     float: left;
   }
+
+  nav.sidebar:hover{
+    margin-left: 0px;
+  }
+
   /*Show hidden items on nav*/
   nav.sidebar .forAnimate{
     opacity: 1;

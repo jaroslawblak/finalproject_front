@@ -62,3 +62,9 @@ a.td-price{
 .paleyellow{color:#f8d97c}
 .purple{color:#b461ff}
 .turquoise{color:#52edff}
+
+@media (min-width: 1620px) {
+  #resourceTable{
+  margin-left: -150px;
+  }
+}

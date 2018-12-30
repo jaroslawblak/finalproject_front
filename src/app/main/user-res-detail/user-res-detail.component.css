@@ -2,8 +2,26 @@ body{
   background:#121212;
   font-family: sans-serif;
   color:#ccc;
-  padding:15px
+  padding:15px;
 }
+.popuper {
+  position: absolute;
+  margin: -400px 300px;
+  width: 600px;
+  height: 550px;
+  overflow-y:auto;
+
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.6);
+  background-color: #282828;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #F5F5F5;
+}
+
 
 .table>thead>tr>th{border-bottom: none;}
 .exotic-table{
@@ -44,9 +62,19 @@ a.td-price{
   color:#fff;
   border-bottom:1px dotted #ccc
 }
-.input-text{
-  color:#1a1a1a;
+.ui-dropdown .ui-dropdown-label
+{
+  color: #52edff;
+  visibility: hidden;
 }
+
+input[type="text"], [type="date"], textarea {
+  color:whitesmoke;
+  background-color : #333333;
+  border-radius: 15px;
+  padding: 10px;
+}
+
 .green{color:#47e900}
 .red{color:#f00808}
 .paleyellow{color:#f8d97c}

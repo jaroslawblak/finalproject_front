@@ -1,3 +1,4 @@
+<head>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -13,6 +14,7 @@
 
 </script>
 <!------ Include the above in your HEAD tag ---------->
+</head>
 
 <div class="container">
   <div class="scrollbar" id="style-14">
@@ -20,8 +22,8 @@
   </div>
 
   <div class="row" style="margin-top: 20px ">
-    <div class="row" style="height: 250px; width: 90%; margin: auto">
-      <div class="table-responsive" style="padding: 15px; max-height: 300px">
+    <div class="row" style="height: 250px; width: 80%; margin: 0 180px; z-index: 7000">
+      <div class="table-responsive" [style.opacity]="getOpacity()" style="padding: 15px; max-height: 300px" id="resourceTable">
         <table id="main-table" class="table exotic-table">
           <thead>
           <tr class="text-center">
@@ -44,7 +46,7 @@
               <button style="background-color: transparent; border: none; color: greenyellow"
                       class="glyphicon glyphicon-info-sign blue" (click)="showView(res.id)"></button>
               <button style="background-color: transparent; border: none" class="glyphicon glyphicon-pencil paleyellow"
-                      (click)="showEdit()"></button>
+                      (click)="showEdit(res.id)"></button>
               <button style="background-color: transparent; border: none" class="glyphicon glyphicon-remove red"
                       (click)="showEdit()"></button>
             </td>
@@ -53,12 +55,11 @@
         </table>
       </div>
     </div>
+    <div style="height: 90px"></div>
 
-    <div style="height: 50px"></div>
-    <ngForm>
-    <p-dialog [visible]="displayView" [modal]="true" [responsive]="true"
+    <p-dialog *ngIf="resource != null" [transitionOptions]="'0ms'" [visible]="displayView" [modal]="true" [dismissableMask]="true" [responsive]="true"
               [maximizable]="true" [baseZIndex]="10000" [contentStyle]="{'max-height':'200px'}">
-      <div class="row" style="margin: auto; width: 90%;">
+      <div class="row" style=" width: 100%;">
 
         <div class="col-md-4">
           <div class="table-responsive">
@@ -133,22 +134,23 @@
                 <td colspan="3" class="text-center" style="padding: 10px;height: 125px">{{resource.description}}</td>
               </tr>
               <tr>
-                <td class="text-center" style="padding: 45px">
-                  Categories
+                <td class="text-center" style="padding: 50px">
+                  <div style="text-align: center">Categories</div>
                 </td>
-                <td colspan="2.5" class="text-center" style="padding: 10px;height: 135px">Example category</td>
+                <td  width="70%" colspan="2" class="text-center" style="padding: 10px;height: 135px"><span (click)="printText()" *ngFor="let cat of categories; let myIndex = index">{{cat.name}}<br></span></td>
               </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
-      <!--</ng-template>-->
     </p-dialog>
-    <div *ngIf="displayEdit">
-      <app-user-res-detail></app-user-res-detail>
-    </div>
-    </ngForm>
+      <p-dialog  [style]="{height: '20px'}" [(visible)]="displayEdit" [modal]="true"
+                [dismissableMask]="true"  [responsive]="true"
+                [maximizable]="true" [baseZIndex]="1000">
+        <app-user-res-detail></app-user-res-detail>
+      </p-dialog>
+
   </div>
 </div>
 

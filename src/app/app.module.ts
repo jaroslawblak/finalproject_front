@@ -20,8 +20,9 @@ import { UserProfileComponent } from './main/user-profile/user-profile.component
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DialogModule} from 'primeng/dialog';
 import {CalendarModule} from 'primeng/calendar';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {DropdownModule} from 'primeng/dropdown';
 import { UserResDetailComponent } from './main/user-res-detail/user-res-detail.component';
-
 
 
 const routes: Routes = [
@@ -57,7 +58,9 @@ export const routing = RouterModule.forRoot(routes);
     HttpClientModule,
     RouterModule.forRoot(routes),
     DialogModule,
-    CalendarModule
+    CalendarModule,
+    MultiSelectModule,
+    DropdownModule
   ],
   providers: [UserResourcesService, AuthGuard],
   bootstrap: [AppComponent]

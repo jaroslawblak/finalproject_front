@@ -1,105 +1,109 @@
 <head>
 
 </head>
-<ngForm>
-<div>
-
-  <div class="row" style="width: 90%; margin: auto">
-    <div class="table-responsive" style="padding: 15px; max-width: 80%; margin: 0 auto">
-      <table id="edit-table" class="table exotic-table">
+<div class="scrollbar" id="style-14">
+  <div class="force-overflow"></div>
+</div>
+  <div  class = "popuper">
+    <div style="padding: 15px; max-width: 80%; height: 100%">
+      <table *ngIf="resource != null" id="edit-table" class="table exotic-table">
         <thead>
         <tr class="text-center">
           <th colspan="2">Edit resource</th>
         </tr>
         </thead>
         <tbody class="text-center">
-        <tr class="text-center">
+        <tr>
           <td>Name:</td>
           <td>
             <div class="ui-g-12 ui-md-4">
               <div class="ui-inputgroup">
-                <input style="color: #cccccc" class="input-text" type="text" pInputText placeholder="name">
+                <input [(ngModel)]="resource.name" class="input-text" type="text" pInputText value="{{resource.name}}">
               </div>
             </div>
           </td>
         </tr>
         <tr rowcount="2" class="text-center">
-          <td>Description</td>
+          <td>Type</td>
           <td>
             <div class="ui-g-12 ui-md-4">
               <div class="ui-inputgroup">
-                <input type="text" pInputText placeholder="Description">
+                <input [(ngModel)]="resource.type"  type="text" pInputText value="{{resource.type}}">
               </div>
             </div>
           </td>
         </tr>
-        <tr class="text-center">
-          <td>Add time:</td>
+        <tr rowcount="2" class="text-center">
+          <td>State</td>
           <td>
             <div class="ui-g-12 ui-md-4">
               <div class="ui-inputgroup">
-                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-                <input type="text" pInputText placeholder="Last name">
+                <input [(ngModel)]="resource.state" type="text" pInputText value="{{resource.state}}">
               </div>
             </div>
           </td>
         </tr>
-        <tr class="text-center">
-          <td>Del time:</td>
+        <tr>
+          <td class="text-center">
+            <span>Add Time</span>
+          </td>
           <td>
             <div class="ui-g-12 ui-md-4">
               <div class="ui-inputgroup">
-                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-                <input type="text" pInputText placeholder="Last name">
+                <input [(ngModel)]="resource.addTime" type="date" name="addTime">
               </div>
             </div>
           </td>
         </tr>
-        <tr class="text-center">
-          <td>Last name:</td>
+        <tr>
+          <td class="text-center">
+            <span>Description</span>
+          </td>
           <td>
             <div class="ui-g-12 ui-md-4">
-              <div class="ui-inputgroup" style="text-align: center">
+              <div class="ui-inputgroup">
+                <textarea [(ngModel)]="resource.description" rows="5" cols="50">{{resource.description}}</textarea>
               </div>
             </div>
           </td>
         </tr>
-        <tr class="text-center">
-          <td>Last name:</td>
+        <tr>
+          <td class="text-center">
+            <span>Categories</span>
+          </td>
           <td>
-            <div class="ui-g-12 ui-md-4">
-              <div class="ui-inputgroup">
-                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-                <input type="text" pInputText placeholder="Last name">
-              </div>
+            <div style="float: right;  display: block; color:#ccc " class="ui-g-12 ui-md-4">
+              <p-multiSelect
+                [style]="{'width': '100%', 'margin-right': '100px', 'color': '#lalala'}"
+                [options]="categories" [(ngModel)]="activeCategories" name="categories"
+                optionLabel="name"></p-multiSelect>
             </div>
           </td>
         </tr>
-        <tr class="text-center">
-          <td>Last name:</td>
+        <tr>
+          <td class="text-center">
+            <span>Place</span>
+          </td>
           <td>
-            <div class="ui-g-12 ui-md-4">
-              <div class="ui-inputgroup">
-                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-                <input type="text" pInputText placeholder="Last name">
-              </div>
+            <div style="float: right;" class="ui-g-12 ui-md-4">
+              <p-dropdown [style]="{'width': '100%', 'margin-right': '100px', 'color': 'white'}"
+                          [options]="places" [(ngModel)]="activePlace"
+                          optionLabel="name"
+
+                        >
+              </p-dropdown>
             </div>
           </td>
         </tr>
-        <tr class="text-center">
-          <td>Last name:</td>
-          <td>
-            <div class="ui-g-12 ui-md-4">
-              <div class="ui-inputgroup">
-                <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
-                <input type="text" pInputText placeholder="Last name">
-              </div>
-            </div>
+        <tr>
+          <td colspan="2" class="text-center" style="padding: 2% 10% 2% 10%;">
+            <button (click)="dismissEdit()" style="float: left; width: 20%" type="button" class="btn btn-warning">Back</button>
+            <button (click)="updateResource()" style="float: right; width: 20%" type="button" class="btn btn-warning">Save</button>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
   </div>
-</div>
-</ngForm>
+
+
