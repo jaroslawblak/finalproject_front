@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import {Resource} from '../../Resource.model';
+import {Component, OnInit} from '@angular/core';
 import {User} from '../../User.model';
 import {UserProfileService} from './user-profile.service';
 
@@ -15,7 +14,7 @@ export class UserProfileComponent implements OnInit {
   constructor(private userService: UserProfileService) { }
 
   ngOnInit() {
-    this.user = JSON.parse(sessionStorage.getItem("user"));
+    this.user = JSON.parse(sessionStorage.getItem('user'));
     console.log(this.user);
   }
 

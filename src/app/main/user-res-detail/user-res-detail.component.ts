@@ -22,7 +22,6 @@ export class UserResDetailComponent implements OnInit {
   activePlace: Place;
   places: Place[];
   id: number;
-  visible: boolean = true;
 
   constructor(private resourceService: ResourceService,
               private categoryService: CategoryService,
@@ -56,7 +55,6 @@ export class UserResDetailComponent implements OnInit {
       this.activeCategories = data;
     });
   }
-
   getAllCategories() {
     this.categoryService.getAllCategories().subscribe(data => {
       this.categories = data;
