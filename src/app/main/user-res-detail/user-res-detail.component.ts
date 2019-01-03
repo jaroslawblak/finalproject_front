@@ -7,6 +7,7 @@ import {UserTableInfoComponent} from '../user-table-info/user-table-info.compone
 import {CategoryService} from '../../category.service';
 import {PlaceService} from '../../place.service';
 import {Place} from '../../place.model';
+import {InfoTransferService} from '../../info-transfer.service';
 
 
 @Component({
@@ -22,10 +23,12 @@ export class UserResDetailComponent implements OnInit {
   activePlace: Place;
   places: Place[];
   id: number;
+  isActive: boolean;
 
   constructor(private resourceService: ResourceService,
               private categoryService: CategoryService,
-              private placeService: PlaceService) {
+              private placeService: PlaceService,
+              private infoTransferService: InfoTransferService) {
     this.activeCategories = [];
     this.categories = [];
     this.places = [];
@@ -47,6 +50,7 @@ export class UserResDetailComponent implements OnInit {
 
         }
       });
+    this.infoTransferService.displayEditState.subscribe(isActive => this.isActive = isActive);
     });
   }
 
@@ -79,6 +83,7 @@ export class UserResDetailComponent implements OnInit {
 
   }
   dismissEdit() {
+     this.infoTransferService.changeDisplayEditState(false);
   }
 
   updateResource() {

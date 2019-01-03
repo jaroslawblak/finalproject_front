@@ -9,14 +9,13 @@ import { Router } from '@angular/router';
 })
 export class MainComponent implements OnInit {
 
-  listIsOn: boolean = true;
+  listIsOn = true;
 
   constructor(private router: Router) {
 
   }
   ngOnInit() {
   }
-
   showProfile = function () {
     this.listIsOn  = false;
     this.router.navigateByUrl('main');
@@ -26,9 +25,12 @@ export class MainComponent implements OnInit {
     this.router.navigateByUrl('main');
   };
   showAdminPanel = function () {
-    this.router.navigateByUrl('main/admin');
+    this.router.navigateByUrl('/main/admin');
   };
   logout = function () {
+    sessionStorage.removeItem('isLoggedIn');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
     this.router.navigateByUrl('/login');
   };
 }

@@ -11,17 +11,18 @@ export class ResourceService {
   private idResForUserEdit = new BehaviorSubject<number>(0);
   currentMessage = this.idResForUserEdit.asObservable();
 
-  constructor(private http: HttpClient) {
-  }
-
-
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
     })
   };
 
+
+  constructor(private http: HttpClient) {
+  }
+
   changeIdResForUserEdit(id: number) {
+    console.log(this.idResForUserEdit);
     this.idResForUserEdit.next(id);
   }
 
@@ -42,8 +43,6 @@ export class ResourceService {
       })
     };
     const url = 'http://localhost:8080/resources';
-    console.log('Saving resource...');
-    console.log(resource);
-    this.http.put<Resource>(url, resource, httpOptions);
+    this.http.put<Resource>(url, resource, httpOptions).subscribe();
   }
 }

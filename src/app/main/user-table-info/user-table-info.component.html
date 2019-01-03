@@ -41,7 +41,7 @@
           <tr *ngFor="let res of resources; let myIndex = index">
             <td>{{myIndex + 1}}</td>
             <td>{{res.name}}</td>
-            <td>{{res.placeId}}</td>
+            <td>{{res.placeId.name}}</td>
             <td>
               <button style="background-color: transparent; border: none; color: greenyellow"
                       class="glyphicon glyphicon-info-sign blue" (click)="showView(res.id)"></button>
@@ -137,7 +137,7 @@
                 <td class="text-center" style="padding: 50px">
                   <div style="text-align: center">Categories</div>
                 </td>
-                <td  width="70%" colspan="2" class="text-center" style="padding: 10px;height: 135px"><span (click)="printText()" *ngFor="let cat of categories; let myIndex = index">{{cat.name}}<br></span></td>
+                <td  width="70%" colspan="2" class="text-center" style="padding: 10px;height: 135px"><span *ngFor="let cat of categories; let myIndex = index">{{cat.name}}<br></span></td>
               </tr>
               </tbody>
             </table>
@@ -150,7 +150,6 @@
                 [maximizable]="true" [baseZIndex]="1000">
         <app-user-res-detail></app-user-res-detail>
       </p-dialog>
-
   </div>
 </div>
 

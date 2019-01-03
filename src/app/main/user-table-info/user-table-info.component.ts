@@ -6,7 +6,8 @@ import {User} from '../../User.model';
 import {ResourceService} from '../../resource.service';
 import {Category} from '../../categories/category.model';
 import {CategoryService} from '../../category.service';
-import {UserResDetailComponent} from '../user-res-detail/user-res-detail.component';
+import {_isNumberValue} from '@angular/cdk/coercion';
+import {InfoTransferService} from '../../info-transfer.service';
 
 @Component({
   selector: 'app-user-table-info',
@@ -20,13 +21,14 @@ export class UserTableInfoComponent implements OnInit {
   categories: Category[];
   userResources: UserResource[];
   user: User;
-  displayEdit: boolean = false;
-  displayView: boolean = false;
+  displayEdit = false;
+  displayView = false;
   id: number;
 
   constructor(private userResourcesService: UserResourcesService,
               private resourceService: ResourceService,
-              private categoryService: CategoryService) {
+              private categoryService: CategoryService,
+              private infoTransferService: InfoTransferService) {
     this.userResources = [];
     this.categories = [];
     this.resources = [];
@@ -39,6 +41,7 @@ export class UserTableInfoComponent implements OnInit {
       this.userResources = data;
       this.loadResources(this.userResources);
     });
+    this.infoTransferService.displayEditState.subscribe(isActive => this.displayEdit = isActive);
   }
 
   showEdit(id: number) {
@@ -50,19 +53,19 @@ export class UserTableInfoComponent implements OnInit {
   showView(id: number) {
     this.resourceService.getResource(id).subscribe(data => {
       this._resource = data;
-      console.log(this._resource);
-      console.log(id);
     });
     this.displayView = true;
     this.displayEdit = false;
     this.categoryService.getActiveCategories(id).subscribe(data => {
       this.categories = data;
-      console.log(this.categories);
     });
   }
 
   loadResources(userResource: UserResource[]): Resource[] {
     for (let i = 0; i < userResource.length; i++) {
+      if ((_isNumberValue(this.userResources[i].resource))) {
+        continue;
+      }
       this.resources.push(this.userResources[i].resource);
     }
     return this.resources;
@@ -71,9 +74,6 @@ export class UserTableInfoComponent implements OnInit {
   get resource(): Resource {
     return this._resource;
   }
-  printText() {
-    console.log("LEO");
-  }
 
   getOpacity(): number {
     if (this.displayEdit) {
@@ -81,3 +81,4 @@ export class UserTableInfoComponent implements OnInit {
     }
   }
 }
+

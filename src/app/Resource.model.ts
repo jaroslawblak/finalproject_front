@@ -1,6 +1,6 @@
 
 export class Resource {
-  id: number;
+  private _id: number;
   name: string;
   description: string;
   type: number;

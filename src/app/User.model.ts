@@ -12,4 +12,5 @@ export class User {
   note: string;
   authKey: string;
   parentUser: string;
+  role: string;
 }
