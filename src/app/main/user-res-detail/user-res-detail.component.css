@@ -6,9 +6,9 @@ body{
 }
 .popuper {
   position: absolute;
-  margin: -400px 300px;
-  width: 600px;
-  height: 550px;
+  margin: -450px 300px;
+  width: 650px;
+  height: 650px;
   overflow-y:auto;
 
 }

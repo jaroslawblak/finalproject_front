@@ -73,11 +73,14 @@
             <span>Categories</span>
           </td>
           <td>
-            <div style="float: right;  display: block; color:#ccc " class="ui-g-12 ui-md-4">
-              <p-multiSelect
-                [style]="{'width': '100%', 'margin-right': '100px', 'color': '#lalala'}"
-                [options]="categories" [(ngModel)]="activeCategories" name="categories"
-                optionLabel="name"></p-multiSelect>
+            <div style="float: right; width: 80%; display: block; color:#ccc " class="ui-g-12 ui-md-4">
+              <ng-multiselect-dropdown *ngIf="categories && activeCategories != null"
+                [placeholder]="'Choose categories'"
+                [data]="categories"
+                [(ngModel)]="activeCategories"
+                [settings]="categorySettings"
+                >
+              </ng-multiselect-dropdown>
             </div>
           </td>
         </tr>
@@ -86,20 +89,37 @@
             <span>Place</span>
           </td>
           <td>
-            <div style="float: right;" class="ui-g-12 ui-md-4">
-              <p-dropdown [style]="{'width': '100%', 'margin-right': '100px', 'color': 'white'}"
-                          [options]="places" [(ngModel)]="activePlace"
-                          optionLabel="name"
-
-                        >
-              </p-dropdown>
+            <div style="float: right; width: 80%" class="ui-g-12 ui-md-4">
+              <ng-multiselect-dropdown
+                                       [placeholder]="'Choose a place'"
+                                       [data]="places"
+                                       [(ngModel)]="activePlace"
+                                       [settings]="placeSettings"
+                                       >
+              </ng-multiselect-dropdown>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="center-td">
+            <span>Parent resource</span>
+          </td>
+          <td>
+            <div style="float: right; width: 80%; display: block; color:#ccc " class="ui-g-12 ui-md-4">
+              <ng-multiselect-dropdown *ngIf="resources != null"
+                                       [placeholder]="'Choose parent resource'"
+                                       [data]="resources"
+                                       [(ngModel)]="activeParentResource"
+                                       [settings]="resourceSettings"
+                                       >
+              </ng-multiselect-dropdown>
             </div>
           </td>
         </tr>
         <tr>
           <td colspan="2" class="text-center" style="padding: 2% 10% 2% 10%;">
             <button (click)="dismissEdit()" style="float: left; width: 20%" type="button" class="btn btn-warning">Back</button>
-            <button (click)="updateResource()" style="float: right; width: 20%" type="button" class="btn btn-warning">Save</button>
+            <button  (click)="prepareResourceForSaveThenSave()" style="float: right; width: 20%" type="button" class="btn btn-warning">Save</button>
           </td>
         </tr>
         </tbody>

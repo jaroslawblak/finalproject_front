@@ -18,8 +18,13 @@ export class UserResDetailComponent implements OnInit {
   categories: Category[];
   activeCategories: Category[];
   resource: Resource;
-  activePlace: Place;
+  activeParentResource: Resource[];
+  resources: Resource[];
+  activePlace: Place[];
   places: Place[];
+  categorySettings = {};
+  placeSettings = {};
+  resourceSettings = {};
   id: number;
   isActive: boolean;
 
@@ -30,25 +35,49 @@ export class UserResDetailComponent implements OnInit {
     this.activeCategories = [];
     this.categories = [];
     this.places = [];
+    this.activePlace = [];
+    this.resources = [];
+    this.activeParentResource = [];
+    this.dropdownSettings();
   }
 
   ngOnInit() {
     this.resourceService.currentMessage.subscribe(id => {
       this.id = id;
       this.resourceService.getResource(this.id).subscribe(data => {
+        console.log(data);
+        this.activeCategories = [];
+        this.categories = [];
+        this.places = [];
+        this.activePlace = [];
+        this.resources = [];
+        this.activeParentResource = [];
         this.resource = data;
         console.log(this.resource);
-        console.log(this.id);
         if (this.resource != null) {
-          this.getActiveCategories();
-          this.getAllCategories();
+          this.getAllResources();
+          if (this.resource.parentResource != null) {
+            this.activeParentResource.push(this.resource.parentResource);
+          } else {
+            this.activeParentResource = [];
+          }
           this.getAllPlaces();
-          this.activePlace = this.resource.placeId;
-          console.log(this.activePlace);
-
+          if (this.resource.place != null) {
+            this.activePlace.push(this.resource.place);
+          } else {
+            this.activePlace = [];
+          }
+          this.getAllCategories();
+          this.getActiveCategories();
         }
       });
       this.infoTransferService.displayEditState.subscribe(isActive => this.isActive = isActive);
+    });
+  }
+
+  getAllResources() {
+    this.resourceService.getResources().subscribe(res => {
+      this.resources = res;
     });
   }
 
@@ -64,23 +93,13 @@ export class UserResDetailComponent implements OnInit {
     });
   }
 
-
-  // getActivePlace() {
-  //   console.log(this.resource.placeId);
-  //
-  //   this.placeService.getActivePlace(this.resource.placeId).subscribe(data => {
-  //       this.activePlace = data;
-  //       console.log(this.activePlace);
-  //     });
-  // }
-
   getAllPlaces() {
     this.placeService.getAllPlaces().subscribe(data => {
       this.places = data;
-      console.log(this.places);
     });
 
   }
+
   dismissEdit() {
     this.infoTransferService.changeDisplayEditState(false);
   }
@@ -109,5 +128,35 @@ export class UserResDetailComponent implements OnInit {
     this.resourceSettings = this.placeSettings;
   }
 
+  prepareResourceForSaveThenSave() {
+    if (this.resource.name == null || this.resource.type == null ||
+      this.resource.state == null || this.resource.place == null || this.resource.addTime === '') {
+      alert('Fill all required fields.');
+      return;
+    }
+    const categoryIds: number[] = [];
+    if (this.activeParentResource != null) {
+      this.placeService.getActivePlace(this.activePlace[0].id).subscribe(place => {
+        this.resource.place = place;
+        this.resourceService.getResource(this.activeParentResource[0].id).subscribe(data => {
+          this.resource.parentResource = data;
+          this.activeCategories.filter(category => categoryIds.push(category.id));
+          this.resourceService.saveResource(this.resource);
+          this.categoryService.updateResToCategory(this.resource.id, categoryIds);
+          this.infoTransferService.changeDisplayEditState(false);
+        });
+      });
+    } else {
+      this.placeService.getActivePlace(this.activePlace[0].id).subscribe(place => {
+        this.resource.place = place;
+        this.resource.parentResource = null;
+        this.activeCategories.filter(category => categoryIds.push(category.id));
+        this.resourceService.saveResource(this.resource);
+        this.categoryService.updateResToCategory(this.resource.id, categoryIds);
+        this.infoTransferService.changeDisplayEditState(false);
+      });
+    }
+    window.location.reload();
 
+  }
 }

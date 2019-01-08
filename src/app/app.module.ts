@@ -22,6 +22,7 @@ import {DialogModule} from 'primeng/dialog';
 import {CalendarModule} from 'primeng/calendar';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {DropdownModule} from 'primeng/dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { UserResDetailComponent } from './main/user-res-detail/user-res-detail.component';
 import { AdminPanelComponent } from './main/admin-panel/admin-panel.component';
 import {AdminGuard} from './guards/admin.guard';
@@ -92,6 +93,7 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     SlickModule.forRoot(),
+    NgMultiSelectDropDownModule.forRoot(),
     FormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
