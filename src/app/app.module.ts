@@ -25,14 +25,42 @@ import {DropdownModule} from 'primeng/dropdown';
 import { UserResDetailComponent } from './main/user-res-detail/user-res-detail.component';
 import { AdminPanelComponent } from './main/admin-panel/admin-panel.component';
 import {AdminGuard} from './guards/admin.guard';
+import {CarouselModule} from 'primeng/carousel';
+import { EditTableUsersComponent } from './main/admin-panel/edit-table-users/edit-table-users.component';
+import { EditTableUserResourcesComponent } from './main/admin-panel/edit-table-user-resources/edit-table-user-resources.component';
+import { EditTableResourcesComponent } from './main/admin-panel/edit-table-resources/edit-table-resources.component';
+import { EditTableDocumentsComponent } from './main/admin-panel/edit-table-documents/edit-table-documents.component';
+import { EditTablePlacesComponent } from './main/admin-panel/edit-table-places/edit-table-places.component';
+import { EditTableResourcesCategoriesComponent } from './main/admin-panel/edit-table-resources-categories/edit-table-resources-categories.component';
+import { EditTableCategoryComponent } from './main/admin-panel/edit-table-category/edit-table-category.component';
+import { EditTableChildrenOfResourceComponent } from './main/admin-panel/edit-table-children-of-resource/edit-table-children-of-resource.component';
+import {DataViewModule} from 'primeng/dataview';
+import {PanelModule} from 'primeng/panel';
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
+import { TicketComponent } from './main/ticket/ticket.component';
+import {CardModule} from 'primeng/card';
+import {TableModule} from 'primeng/table';
+import {PaginatorModule} from 'primeng/paginator';
+import {SelectButtonModule} from 'primeng/selectbutton';
+
+
 
 
 const routes: Routes = [
   {path: '', pathMatch: 'full', redirectTo: 'login'},
   {path: 'login', component: HomeComponent},
   {path: 'main', component: MainComponent, canActivate: [AuthGuard]},
-  {path: 'main/admin', component: AdminPanelComponent, canActivate: [AdminGuard]}
-
+  {path: 'main/admin', component: AdminPanelComponent, canActivate: [AdminGuard]},
+  {path: 'main/ticket', component: TicketComponent},
+  {path: 'main/admin/edit/Users', component: EditTableUsersComponent},
+  {path: 'main/admin/edit/User-Resources', component: EditTableUserResourcesComponent},
+  {path: 'main/admin/edit/Resources', component: EditTableResourcesComponent},
+  {path: 'main/admin/edit/Documents', component: EditTableDocumentsComponent},
+  {path: 'main/admin/edit/Places', component: EditTablePlacesComponent},
+  {path: 'main/admin/edit/Resources-Categories', component: EditTableResourcesCategoriesComponent},
+  {path: 'main/admin/edit/Category', component: EditTableCategoryComponent},
+  {path: 'main/admin/edit/Children-of-resource', component: EditTableChildrenOfResourceComponent},
 ];
 
 @NgModule({
@@ -49,7 +77,17 @@ const routes: Routes = [
     UserTableInfoComponent,
     UserProfileComponent,
     UserResDetailComponent,
-    AdminPanelComponent
+    AdminPanelComponent,
+    EditTableUsersComponent,
+    EditTableUserResourcesComponent,
+    EditTableResourcesComponent,
+    EditTableDocumentsComponent,
+    EditTablePlacesComponent,
+    EditTableResourcesCategoriesComponent,
+    EditTableCategoryComponent,
+    EditTableChildrenOfResourceComponent,
+    TicketComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -61,9 +99,17 @@ const routes: Routes = [
     DialogModule,
     CalendarModule,
     MultiSelectModule,
-    DropdownModule
+    DropdownModule,
+    CarouselModule,
+    DataViewModule,
+    PanelModule,
+    ConfirmDialogModule,
+    CardModule,
+    TableModule,
+    PaginatorModule,
+    SelectButtonModule
   ],
-  providers: [UserResourcesService, AuthGuard, AdminGuard],
+  providers: [UserResourcesService, AuthGuard, AdminGuard, ConfirmationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

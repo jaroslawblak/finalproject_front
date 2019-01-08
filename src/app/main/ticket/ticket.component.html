@@ -1,0 +1,187 @@
+<p-confirmDialog header="Choose a ticket" footer icon="pi pi-envelope"
+                 acceptIcon="pi pi-chevron-circle-right" acceptLabel='RENT'
+                 acceptButtonStyleClass={test} rejectLabel='SCRAP' (onHide)="backToMenu()"></p-confirmDialog>
+
+<p-dialog header="RENT RESOURCE TICKET" [(visible)]="ticketRENT" [responsive]="true" showEffect="fade" [modal]="true" (onHide)="backToMenu()">
+  <form ngNativeValidate #rentResUser="ngForm" (ngSubmit)="sentNewTicket(rentResUser)">
+    <div class="ui-g-6" style="text-align:center">
+      <div class="ui-g" style="width: 450px; padding: 20px">
+        <div class="ui-g-12" style="text-align:center">
+          <label style="margin-top: 5px; font-size: 20px">Enter your data: </label>
+        </div>
+        <div class="form-group">
+          <div class="ui-g-4">
+            <label style="margin-top: 5px">First Name: </label></div>
+          <div class="ui-g-8">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="firstName" name="firstName" id="firstName" class="form-control" type="text" required>
+            </div>
+          </div>
+
+          <div class="ui-g-4"><label style="margin-top: 5px">Last Name: </label></div>
+          <div class="ui-g-8">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="lastName" name="lastName" id="lastName" class="form-control" type="text" required>
+            </div>
+          </div>
+          <div class="ui-g-4">
+            <label style="margin-top: 5px">Email: </label></div>
+          <div class="ui-g-8">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="email" name="email" id="email" class="form-control" type="text" required>
+            </div>
+          </div>
+          <div class="ui-g-4"><label style="margin-top: 5px">Telephone: </label></div>
+          <div class="ui-g-8">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="tel" name="tel" id="tel" class="form-control" type="tel" required>
+            </div>
+          </div>
+          <div class="ui-g-4"><label style="margin-top: 5px">Editing from account: </label></div>
+          <div class="ui-g-8">
+            <label style="margin-top: 5px">{{user.firstName}} {{user.lastName}} </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui-g-6" style="text-align:center">
+      <!--<form ngNativeValidate #rentResData="ngForm">-->
+      <div class="ui-g" style="width: 450px; padding: 20px">
+        <div class="ui-g-12" style="text-align:center">
+          <label style="margin: 5px; font-size: 20px">Enter resource data to rent: </label>
+        </div>
+        <div class="form-group">
+          <div class="ui-g-4"><label style="margin-top: 5px">Resources: </label></div>
+          <div class="ui-g-8">
+            <ng-multiselect-dropdown *ngIf="resources!= null"
+                                     [placeholder]="'Choose a resources'"
+                                     [data]="resources"
+                                     [(ngModel)]="selectedResource"
+                                     name="selectedResources"
+                                     (onSelect)="onItemSelect($event)"
+                                     [settings]="ResourceDropdownSettings">
+            </ng-multiselect-dropdown>
+          </div>
+          <div class="ui-g-4"><label style="margin-top: 5px">Owner: </label></div>
+          <div class="ui-g-8">
+            <div class="ui-inputgroup">
+              <label style="margin-top: 5px">{{this.owner?.firstName}} {{this.owner?.lastName}}</label></div>
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Date from: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input [(ngModel)]="dateFrom" class="form-control" type="date" required name="dateFrom">
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Date to: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input [(ngModel)]="dateTo" class="form-control" type="date" name="dateTo">
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Note: </label></div>
+        <div class="ui-g-10">
+          <div class="ui-inputgroup">
+            <textarea [(ngModel)]="note" name="note" class="form-control" rows="5" cols="50"></textarea>
+          </div>
+        </div>
+        <div class="ui-g-10" style="margin-top: 15px">
+        </div>
+        <div style="margin-top: 15px">
+          <button pButton type="submit" style="float: right; height: 30px" label="SEND"
+                  (onClick)="sentNewTicket(rentResUser)"></button>
+        </div>
+      </div>
+    </div>
+  </form>
+</p-dialog>
+
+
+<!------------------------>
+
+
+<p-dialog header="SCRAP RESOURCE TICKET" [(visible)]="ticketSCRAP" [responsive]="true" showEffect="fade" [modal]="true"
+          (onHide)="backToMenu()">
+  <form ngNativeValidate #scraptResUser="ngForm" (ngSubmit)="sentNewScrapTicket(scraptResUser)">
+    <div class="ui-g-6" style="text-align:center">
+      <div class="ui-g" style="width: 450px; padding: 20px">
+        <div class="ui-g-12" style="text-align:center">
+          <label style="margin-top: 5px; font-size: 20px">Enter your data: </label>
+        </div>
+        <div class="form-group">
+          <div class="ui-g-4">
+            <label style="margin-top: 5px">First Name: </label></div>
+          <div class="ui-g-8">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="firstName" name="firstName" id="firstName" class="form-control" type="text" required>
+            </div>
+          </div>
+
+          <div class="ui-g-4"><label style="margin-top: 5px">Last Name: </label></div>
+          <div class="ui-g-8">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="lastName" name="lastName" id="lastName" class="form-control" type="text" required>
+            </div>
+          </div>
+          <div class="ui-g-4">
+            <label style="margin-top: 5px">Email: </label></div>
+          <div class="ui-g-8">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="email" name="email" id="email" class="form-control" type="text" required>
+            </div>
+          </div>
+          <div class="ui-g-4"><label style="margin-top: 5px">Telephone: </label></div>
+          <div class="ui-g-8">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="tel" name="tel" id="tel" class="form-control" type="tel" required>
+            </div>
+          </div>
+          <div class="ui-g-4"><label style="margin-top: 5px">Editing from account: </label></div>
+          <div class="ui-g-8">
+            <label style="margin-top: 5px">{{user.firstName}} {{user.lastName}} </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui-g-6" style="text-align:center">
+      <div class="ui-g" style="width: 450px; padding: 20px">
+        <div class="ui-g-12" style="text-align:center">
+          <label style="margin: 5px; font-size: 20px">Enter resource data to rent: </label>
+        </div>
+        <div class="form-group">
+          <div class="ui-g-4"><label style="margin-top: 5px">Resources: </label></div>
+          <div class="ui-g-8">
+            <ng-multiselect-dropdown *ngIf="resources!= null"
+                                     [placeholder]="'Choose a resources'"
+                                     [data]="resources"
+                                     [(ngModel)]="selectedResource"
+                                     name="selectedResources"
+                                     (onSelect)="onItemSelect($event)"
+                                     [settings]="ResourceDropdownSettings">
+            </ng-multiselect-dropdown>
+          </div>
+
+        <div class="ui-g-4"><label style="margin-top: 5px">Date from: </label></div>
+        <div class="ui-g-8">
+          <div class="ui-inputgroup">
+            <input [(ngModel)]="dateFrom" class="form-control" type="date" required name="dateFrom">
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Note: </label></div>
+        <div class="ui-g-10">
+          <div class="ui-inputgroup">
+            <textarea [(ngModel)]="note" name="note" class="form-control" rows="5" cols="50"></textarea>
+          </div>
+        </div>
+        <div class="ui-g-10" style="margin-top: 15px">
+        </div>
+        <div style="margin-top: 15px">
+          <button pButton type="submit" style="float: right; height: 30px" label="SEND"
+                  (onClick)="sentNewScrapTicket(scraptResUser)"></button>
+        </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</p-dialog>

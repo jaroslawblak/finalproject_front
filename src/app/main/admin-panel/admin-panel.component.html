@@ -1,0 +1,322 @@
+<head>
+
+</head>
+<div class="container">
+<p-carousel headerText="Choose a table" [value]="tables" [numVisible]=3 circular="true">
+  <ng-template let-table pTemplate="item">
+    <div class="ui-grid ui-grid-responsive">
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12"><img src="assets/images/{{table.title}}.png"></div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12">Id: {{table.id}}</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12">Title: {{table.title}}</div>
+      </div>
+      <div class="ui-grid-row">
+        <div class="ui-grid-col-12">
+          <button type="button" pButton icon="pi pi-search" (click)="selectedTable(table)"></button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-carousel>
+<div class="row" style="height: 50px;"></div>
+  <div class="col-lg-offset-8" style="border-radius: 20px">
+    <p-card header="Check new tickets" subheader="Subheader" [style]="{margin: '0px 40px 0 40px', background: '#222222', color: 'white'}" styleClass="ui-card-shadow">
+      <p-header>
+        <div class="text-center">
+          <label style="font-size: 16px">CHECK NEW TICKETS</label>
+        </div>
+      </p-header>
+      <div class="text-center">
+        <button (click)="showTickets()"><img src="assets/images/msg.png" width="50"></button>
+      </div>
+    </p-card>
+  </div>
+  <div class="col-lg-offset-8" style="border-radius: 20px">
+    <p-card header="Check new tickets" subheader="Subheader" [style]="{margin: '0px 40px 0 40px', background: '#222222', color: 'white'}" styleClass="ui-card-shadow">
+      <p-header>
+        <div class="text-center">
+        <label style="font-size: 16px">GENERATE CSV</label>
+        </div>
+      </p-header>
+      <div class="text-center">
+        <button onClick="generateCsv()"><img src="assets/images/note.png" width="50"></button>
+      </div>
+    </p-card>
+  </div>
+</div>
+
+<p-dialog header="New tickets" [(visible)]="checkTickets" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <p-paginator [rows]="1" [totalRecords]="2" (onPageChange)="paginate($event)"></p-paginator>
+  <div *ngIf="rentResource"  style="width: 100%">
+    <p-table [columns]="cols" [value]="notActiveTicketRent" dataKey="id">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width: 3em"></th>
+          <th *ngFor="let col of columns">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr>
+          <td>
+            <a href="#" [pRowToggler]="rowData">
+              <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </a>
+          </td>
+          <td>
+            {{rowData['id']}}
+          </td>
+          <td>
+            {{rowData?.resource?.name}}
+          </td>
+          <td>
+            {{rowData?.user?.firstName}} {{rowData?.user?.lastName}}
+          </td>
+          <td>
+            {{rowData?.owner?.firstName}} {{rowData?.owner?.lastName}}
+          </td>
+          <td>
+            {{rowData['addTime']}}
+          </td>
+          <td>
+            {{rowData['dateFrom']}}
+          </td>
+          <td>
+          {{rowData['dateTo']}}
+         </td>
+          <td style="text-align: center">
+            <p-button (onClick)="acceptRentTicket(rowData.id)" icon="pi pi-check green"></p-button>
+          </td>
+          <td style="text-align: center" >
+            <p-button (onClick)="rejectRentTicket(rowData.id)" style="margin: auto" icon="pi pi-times"></p-button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+        <tr>
+          <td [attr.colspan]="4">
+            <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+              <div class="ui-g-12 ui-md-3" style="text-align:center">
+                <img  src="assets/images/tool64.png">
+              </div>
+              <div class="ui-g-12 ui-md-9">
+                <div class="ui-g">
+                  <div class="ui-g-12">
+                    <b>Resource ID:</b> {{rowData?.resource?.id}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Name:</b> {{rowData?.resource?.name}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Added :</b> {{rowData?.addTime}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Date to:</b> {{rowData?.place?.name}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Description:</b> {{rowData?.description}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td [attr.colspan]="3">
+            <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+              <div class="ui-g-12 ui-md-3" style="text-align:center">
+                <img src="assets/images/user64.png">
+              </div>
+              <div class="ui-g-12 ui-md-9">
+                <div class="ui-g">
+                  <div class="ui-g-12">
+                    <b>Reporter ID:</b> {{rowData?.user?.id}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Reporter:</b> {{rowData?.user?.firstName}} {{rowData?.user?.lastName}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Email :</b> {{rowData?.user?.email}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Role:</b> {{rowData?.user?.role}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Note:</b> {{rowData?.user?.note}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td [attr.colspan]="3">
+            <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+              <div class="ui-g-6 ui-md-3" style="text-align:center">
+                <img  src="assets/images/user64.png">
+              </div>
+              <div class="ui-g-12 ui-md-9">
+                <div class="ui-g">
+                  <div class="ui-g-12">
+                    <b>Owner ID:</b> {{rowData.owner?.id}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Owner:</b> {{rowData?.owner?.firstName}} {{rowData?.owner?.lastName}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Email :</b> {{rowData?.owner?.email}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Role:</b> {{rowData?.owner?.role}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Note:</b> {{rowData?.owner?.note}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div *ngIf="scrapResource"  style="width: 100%">
+    <p-table [columns]="cols" [value]="notActiveTicketScrap" dataKey="id">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width: 3em"></th>
+          <th>
+            ID
+          </th>
+          <th>
+            User
+          </th>
+          <th>
+            Resource
+          </th>
+          <th>
+            Resource type
+          </th>
+          <th>
+            Resource state
+          </th>
+          <th>
+            Added
+          </th>
+          <th>
+            Date from
+          </th>
+          <th>
+            Note
+          </th>
+          <th>
+            Accept
+          </th>
+          <th>
+            Decline
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr>
+          <td>
+            <a href="#" [pRowToggler]="rowData">
+              <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+            </a>
+          </td>
+          <td>
+            {{rowData['id']}}
+          </td>
+          <td>
+            {{rowData?.user?.firstName}} {{rowData?.user?.lastName}}
+          </td>
+          <td>
+            {{rowData?.resource?.name}}
+          </td>
+          <td>
+            {{rowData?.resource?.type}}
+          </td>
+          <td>
+            {{rowData?.resource?.state}}
+          </td>
+          <td>
+            {{rowData['addTime']}}
+          </td>
+          <td>
+            {{rowData['dateFrom']}}
+          </td>
+          <td>
+            {{rowData?.note}}
+          </td>
+          <td style="text-align: center">
+            <p-button (onClick)="acceptScrapTicket(rowData.id)" icon="pi pi-check green"></p-button>
+          </td>
+          <td style="text-align: center" >
+            <p-button (onClick)="rejectScrapTicket(rowData.id)" style="margin: auto" icon="pi pi-times"></p-button>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+        <tr>
+          <td [attr.colspan]="7">
+            <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+              <div class="ui-g-12 ui-md-3" style="text-align:center">
+                <img  src="assets/images/tool64.png">
+              </div>
+              <div class="ui-g-12 ui-md-9">
+                <div class="ui-g">
+                  <div class="ui-g-6">
+                    <b>Resource ID:</b> {{rowData?.resource?.id}}
+                  </div>
+                  <div class="ui-g-6">
+                    <b>Name:</b> {{rowData?.resource?.name}}
+                  </div>
+                  <div class="ui-g-6">
+                    <b>Name:</b> {{rowData?.resource?.type}}
+                  </div>
+                  <div class="ui-g-6">
+                    <b>Name:</b> {{rowData?.resource?.state}}
+                  </div>
+                  <div class="ui-g-6">
+                    <b>Added :</b> {{rowData?.resource?.addTime}}
+                  </div>
+                  <div class="ui-g-6">
+                    <b>Date to:</b> {{rowData?.resource?.place?.name}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Description:</b> {{rowData?.resource?.description}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+          <td [attr.colspan]="4">
+            <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+              <div class="ui-g-12 ui-md-3" style="text-align:center">
+                <img src="assets/images/user64.png">
+              </div>
+              <div class="ui-g-12 ui-md-9">
+                <div class="ui-g">
+                  <div class="ui-g-12">
+                    <b>Reporter:</b> {{rowData?.user?.firstName}} {{rowData?.user?.lastName}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Email :</b> {{rowData?.user?.email}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Role:</b> {{rowData?.user?.role}}
+                  </div>
+                  <div class="ui-g-12">
+                    <b>Note:</b> {{rowData?.note}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</p-dialog>
+

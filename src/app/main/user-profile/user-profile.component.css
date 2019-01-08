@@ -10,7 +10,8 @@ body{
   color:#fff;
   background: #191919;
   text-align: center;
-  border: none;
+  border: 1px;
+  border-color: white;
 }
 .exotic-table thead tr{
   border: 2px #333 outset;
@@ -35,7 +36,8 @@ body{
   border-bottom:2px outset #333;
 }
 .table-responsive{
-  border:none;
+  border:1px;
+  border-color: white
 }
 .popover {
   color:#000

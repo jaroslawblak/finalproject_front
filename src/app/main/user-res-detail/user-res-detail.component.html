@@ -1,7 +1,5 @@
-<head>
-
-</head>
-<div class="scrollbar" id="style-14">
+<div class="scrollbar" id="style-14" xmlns:date="http://www.w3.org/1999/xhtml"
+     xmlns:date="http://www.w3.org/1999/xhtml">
   <div class="force-overflow"></div>
 </div>
   <div  class = "popuper">
@@ -12,11 +10,12 @@
           <th colspan="2">Edit resource</th>
         </tr>
         </thead>
-        <tbody class="text-center">
-        <tr>
-          <td>Name:</td>
+        <tbody class="text-center" >
+        <tr >
+          <td  class="center-td">
+            <span>Name:</span></td>
           <td>
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-4" style="float: right; margin-right: 150px">
               <div class="ui-inputgroup">
                 <input [(ngModel)]="resource.name" class="input-text" type="text" pInputText value="{{resource.name}}">
               </div>
@@ -24,9 +23,9 @@
           </td>
         </tr>
         <tr rowcount="2" class="text-center">
-          <td>Type</td>
+          <td class="center-td">Type</td>
           <td>
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-4" style="float: right; margin-right: 150px">
               <div class="ui-inputgroup">
                 <input [(ngModel)]="resource.type"  type="text" pInputText value="{{resource.type}}">
               </div>
@@ -34,9 +33,9 @@
           </td>
         </tr>
         <tr rowcount="2" class="text-center">
-          <td>State</td>
+          <td class="center-td">State</td>
           <td>
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-4" style="float: right; margin-right: 150px">
               <div class="ui-inputgroup">
                 <input [(ngModel)]="resource.state" type="text" pInputText value="{{resource.state}}">
               </div>
@@ -44,23 +43,25 @@
           </td>
         </tr>
         <tr>
-          <td class="text-center">
+          <td class="center-td">
+            <div>
             <span>Add Time</span>
+            </div>
           </td>
           <td>
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-8 ui-md-4" style="float: right; margin-right: 125px">
               <div class="ui-inputgroup">
-                <input [(ngModel)]="resource.addTime" type="date" name="addTime">
+                <input value={{resource.addTime}} [(ngModel)]="resource.addTime" style="padding: 7px" type="date" name="addTime" >
               </div>
             </div>
           </td>
         </tr>
         <tr>
-          <td class="text-center">
-            <span>Description</span>
+          <td class="center-td">
+            Description
           </td>
           <td>
-            <div class="ui-g-12 ui-md-4">
+            <div class="ui-g-12 ui-md-4" style="margin-left: 70px; width: 80%">
               <div class="ui-inputgroup">
                 <textarea [(ngModel)]="resource.description" rows="5" cols="50">{{resource.description}}</textarea>
               </div>
@@ -68,7 +69,7 @@
           </td>
         </tr>
         <tr>
-          <td class="text-center">
+          <td class="center-td">
             <span>Categories</span>
           </td>
           <td>
@@ -81,7 +82,7 @@
           </td>
         </tr>
         <tr>
-          <td class="text-center">
+          <td class="center-td">
             <span>Place</span>
           </td>
           <td>

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class MainComponent implements OnInit {
 
   listIsOn = true;
+  profileIsOn = true;
 
   constructor(private router: Router) {
 
@@ -18,15 +19,25 @@ export class MainComponent implements OnInit {
   }
   showProfile = function () {
     this.listIsOn  = false;
+    this.profileIsOn = true;
     this.router.navigateByUrl('main');
   };
   showHome = function () {
     this.listIsOn  = true;
+    this.profileIsOn = false;
     this.router.navigateByUrl('main');
   };
   showAdminPanel = function () {
+    this.listIsOn  = false;
+    this.profileIsOn = false;
     this.router.navigateByUrl('/main/admin');
   };
+  showTicket() {
+    this.listIsOn  = false;
+    this.profileIsOn = true;
+    this.router.navigateByUrl('/main/ticket');
+
+  }
   logout = function () {
     sessionStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('token');

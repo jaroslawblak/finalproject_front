@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Resource} from './Resource.model';
+import {Resource} from './model/Resource.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
 
@@ -36,7 +36,7 @@ export class ResourceService {
     return this.http.get<Resource[]>(url, this.httpOptions);
   }
 
-  saveResource(resource: Resource) {
+  updateResource(resource: Resource) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -44,5 +44,22 @@ export class ResourceService {
     };
     const url = 'http://localhost:8080/resources';
     this.http.put<Resource>(url, resource, httpOptions).subscribe();
+  }
+  saveResource(resource: Resource) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    const url = 'http://localhost:8080/resources';
+    this.http.post<Resource>(url, resource, httpOptions).subscribe();
+  }
+  deleteResource(id: number) {
+    const url = 'http://localhost:8080/resources/' + id;
+    this.http.delete(url).subscribe();
+  }
+  getResourcesForUser(id: number) {
+    const url = 'http://localhost:8080/user/' + id + '/res';
+    return this.http.get<Resource[]>(url, this.httpOptions);
   }
 }

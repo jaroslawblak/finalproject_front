@@ -1,0 +1,312 @@
+<p-dataView #dv [value]="userResources" [paginator]="true" [rows]="5" paginatorPosition="both" filterBy="user">
+
+  <p-header>
+    <div class="ui-helper-clearfix">
+      <div class="ui-g">
+        <div class="ui-g-12 ui-md-4">
+          <span style="font-size: 24px; padding-top: 7px"> User-Resource table info</span>
+        </div>
+        <div class="ui-g-6 ui-md-4 filter-container">
+          <div style="position:relative">
+            <input type="search" style="color: #1a1a1a" pInputText placeholder="Search by name" (keyup)="dv.filter($event.target.value)">
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-3" style="text-align:right; padding-top: 7px">
+          <p-button label="ADD NEW" (onClick)="addNewUserRes()"></p-button>
+        </div>
+        <div class="ui-g-6 ui-md-1" style="text-align:right">
+          <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+        </div>
+      </div>
+    </div>
+  </p-header>
+  <ng-template let-userRes pTemplate="listItem">
+    <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+      <div class="ui-g-12 ui-md-3" style="text-align:center; padding-top: 50px" >
+        <img src="assets/images/User-Resources.png" width="60">
+      </div>
+      <div class="ui-g-12 ui-md-6 car-details">
+        <div class="ui-g" style="font-size: 16px">
+          <div class="ui-g-2 ui-sm-6">Type: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{userRes.type}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">State: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{userRes.state}}</b></div>
+
+          <div class="ui-g-2 ui-sm-3">Date from: </div>
+          <div class="ui-g-4 ui-sm-3"><b>{{userRes.dateFrom}}</b></div>
+
+          <div class="ui-g-2 ui-sm-3">Date to: </div>
+          <div class="ui-g-4 ui-sm-3"><b>{{userRes.dateTo}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">User: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{userRes?.user?.firstName }} {{userRes?.user?.lastName}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">Resource: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{userRes?.resource?.name}}</b></div>
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+        <button pButton type="button" label="View" icon="pi pi-eye" (click)="selectUserRes($event,userRes)"></button>
+      </div>
+      <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+        <button pButton type="button" label="Edit" icon="pi pi-pencil" (click)="editUserRes($event,userRes)"></button>
+      </div>
+      <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+        <button pButton type="button" label="Delete" icon="pi pi-times-circle" (click)="removeUserRes($event,userRes)"></button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template let-userRes pTemplate="gridItem">
+    <div style="padding:.5em" class="ui-g-12 ui-md-3">
+      <p-panel [header]="userRes?.user?.firstName" [style]="{'text-align':'center'}">
+        <img src="assets/images/User-Resources.png" width="60">
+        <hr class="ui-widget-content" style="border-top:0">
+        <button pButton type="button" style="margin-right: 10px" label="View" icon="pi pi-eye" (click)="selectUserRes($event,userRes)"></button>
+        <button pButton type="button" style="margin-right: 10px"label="Edit" icon="pi pi-pencil" (click)="editUserRes($event,userRes)"></button>
+        <button pButton type="button" style="margin-top: 10px"label="Delete" icon="pi pi-times-circle" (click)="removeUserRes($event,userRes)"></button>
+      </p-panel>
+    </div>
+  </ng-template>
+</p-dataView>
+
+<p-dialog header="Add user resource" [(visible)]="addUserResource" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <form ngNativeValidate #addUserResForm="ngForm" (ngSubmit) = "saveNewUserRes(addUserResForm)">
+    <div class="ui-g" style="width: 620px" >
+      <div class="ui-g-12" style="text-align:center">
+        <img src="assets/images/User-Resources.png" width="60">
+      </div>
+      <div class="form-group">
+        <div class="ui-g-4"><label style="margin-top: 5px">User: </label></div>
+        <div class="ui-g-8">
+          <ng-multiselect-dropdown *ngIf="users!= null"
+                                   [placeholder]="'Choose a parent'"
+                                   [data]="users"
+                                   [(ngModel)]="selectedUser"
+                                   name="selectedUser"
+                                   [settings]="UserDropdownSettings">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="ui-g-4"><label style="margin-top: 5px">Resource: </label></div>
+        <div class="ui-g-8">
+          <ng-multiselect-dropdown *ngIf="resources!= null"
+                                   [placeholder]="'Choose a parent'"
+                                   [data]="resources"
+                                   [(ngModel)]="selectedResource"
+                                   name="selectedResource"
+                                   [settings]="ResourceDropdownSettings">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="ui-g-1"><label style="margin-top: 5px">Priority: </label></div>
+        <div class="ui-g-3">
+          <div class="ui-inputgroup">
+            <input name="priority" id="priority"  class="form-control"  type="text"   [(ngModel)]="priority">
+          </div>
+        </div>
+        <div class="ui-g-1"><label style="margin-top: 5px">Type: </label></div>
+        <div class="ui-g-3">
+          <div class="ui-inputgroup">
+            <input name="type" id="type"  class="form-control"  type="text" required [(ngModel)]="type">
+          </div>
+        </div>
+        <div class="ui-g-1"><label style="margin-top: 5px">State: </label></div>
+        <div class="ui-g-3">
+          <div class="ui-inputgroup">
+            <input name="state" id="state"  class="form-control"  type="text" required [(ngModel)]="state">
+          </div>
+        </div>
+      <div class="ui-g-2"><label style="margin-top: 5px">Add time: </label></div>
+      <div class="ui-g-4">
+        <div class="ui-inputgroup">
+          <input [(ngModel)]="addTime"  class="form-control" required type="date" name="addTime" >
+        </div>
+      </div>
+      <div class="ui-g-2"><label style="margin-top: 5px">Del time: </label></div>
+      <div class="ui-g-4">
+        <div class="ui-inputgroup">
+          <input [(ngModel)]="delTime"  class="form-control"  type="date" name="delTime" >
+        </div>
+      </div>
+    <div class="ui-g-2"><label style="margin-top: 5px">Date from: </label></div>
+    <div class="ui-g-4">
+      <div class="ui-inputgroup">
+        <input [(ngModel)]="dateFrom"  class="form-control"  type="date" name="dateFrom" >
+      </div>
+    </div>
+    <div class="ui-g-2"><label style="margin-top: 5px">Date To: </label></div>
+    <div class="ui-g-4">
+      <div class="ui-inputgroup">
+        <input [(ngModel)]="dateTo"  class="form-control"  type="date" name="dateTo" >
+      </div>
+    </div>
+
+        <div class="ui-g-4"><label style="margin-top: 5px">Parent: </label></div>
+        <div class="ui-g-8">
+          <ng-multiselect-dropdown *ngIf="userResources!= null"
+                                   [placeholder]="'Choose a parent'"
+                                   [data]="userResources"
+                                   [(ngModel)]="selectedParentUserResource"
+                                   name="selectedParentUserResource"
+                                   [settings]="ParentUserResourceSettings">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="ui-g-3"><label style="margin-top: 5px"><label style="margin-top: 5px">Note: </label></label></div>
+        <div class="ui-g-9">
+          <div class="ui-inputgroup">
+            <textarea name="note"[(ngModel)]="note"  class="form-control" rows="5" cols="50"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="ui-g-6" style="margin-top: 15px">
+      </div>
+      <div class="ui-g-6" style="margin-top: 15px">
+        <button pButton type="submit" style="float: right; margin-right: 50px; height: 30px" label="Save" (onClick)="saveNewUserRes(addUserResForm)"></button>
+      </div>
+    </div>
+  </form>
+</p-dialog>
+<p-dialog header="Edit user resource" [(visible)]="displayEditDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <div class="ui-g" *ngIf="selectedUserResource" style="width: 550px" >
+  <form ngNativeValidate #editUserResForm="ngForm" (ngSubmit) = "saveEditedUserRes(editUserResForm)">
+    <div class="ui-g" style="width: 550px" >
+      <div class="ui-g-12" style="text-align:center">
+        <img src="assets/images/User-Resources.png" width="60">
+      </div>
+      <div class="form-group">
+        <div class="ui-g-4"><label style="margin-top: 5px">User: </label></div>
+        <div class="ui-g-8">
+          <ng-multiselect-dropdown *ngIf="users!= null"
+                                   [placeholder]="'Choose a parent'"
+                                   [data]="users"
+                                   [(ngModel)]="selectedUser"
+                                   name="selectedUser"
+                                   [settings]="UserDropdownSettings">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="ui-g-4"><label style="margin-top: 5px">Resource: </label></div>
+        <div class="ui-g-8">
+          <ng-multiselect-dropdown *ngIf="resources!= null"
+                                   [placeholder]="'Choose a parent'"
+                                   [data]="resources"
+                                   [(ngModel)]="selectedResource"
+                                   name="selectedResource"
+                                   [settings]="ResourceDropdownSettings">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="ui-g-1"><label style="margin-top: 5px">Priority: </label></div>
+        <div class="ui-g-3">
+          <div class="ui-inputgroup">
+            <input name="priority" id="priority"  class="form-control"  type="text"   [(ngModel)]="this.selectedUserResource.priority">
+          </div>
+        </div>
+        <div class="ui-g-1"><label style="margin-top: 5px">Type: </label></div>
+        <div class="ui-g-3">
+          <div class="ui-inputgroup">
+            <input name="type" id="type"  class="form-control"  type="text" required [(ngModel)]="this.selectedUserResource.type">
+          </div>
+        </div>
+        <div class="ui-g-1"><label style="margin-top: 5px">State: </label></div>
+        <div class="ui-g-3">
+          <div class="ui-inputgroup">
+            <input name="state" id="state"  class="form-control"  type="text" required [(ngModel)]="this.selectedUserResource.state">
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Add time: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input [(ngModel)]="this.selectedUserResource.addTime"  class="form-control" required type="date" name="addTime" >
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Del time: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input [(ngModel)]="this.selectedUserResource.delTime"  class="form-control"  type="date" name="delTime" >
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Date from: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input [(ngModel)]="this.selectedUserResource.dateFrom"  class="form-control"  type="date" name="dateFrom" >
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Date To: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input [(ngModel)]="this.selectedUserResource.dateTo"  class="form-control"  type="date" name="dateTo" >
+          </div>
+        </div>
+
+        <div class="ui-g-4"><label style="margin-top: 5px">Parent: </label></div>
+        <div class="ui-g-8">
+          <ng-multiselect-dropdown *ngIf="userResources!= null"
+                                   [placeholder]="'Choose a parent'"
+                                   [data]="userResources"
+                                   [(ngModel)]="selectedParentUserResource"
+                                   name="selectedParentUserResource"
+                                   [settings]="ParentUserResourceSettings">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="ui-g-3"><label style="margin-top: 5px"><label style="margin-top: 5px">Note: </label></label></div>
+        <div class="ui-g-9">
+          <div class="ui-inputgroup">
+            <textarea name="note"[(ngModel)]="this.selectedUserResource.note"  class="form-control" rows="5" cols="50"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="ui-g-6" style="margin-top: 15px">
+      </div>
+      <div class="ui-g-6" style="margin-top: 15px">
+        <button pButton type="submit" style="float: right; margin-right: 50px; height: 30px" label="UPDATE" (onClick)="saveEditedUserRes(editUserResForm)"></button>
+      </div>
+    </div>
+  </form>
+  </div>
+</p-dialog>
+
+<p-dialog header="User Resource Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <div class="ui-g" *ngIf="selectedUserResource" style="width: 350px" >
+    <div class="ui-g-12" style="text-align:center">
+      <img src="assets/images/User-Resources.png" width="60">
+    </div>
+    <div class="ui-g-4">ID: </div>
+    <div class="ui-g-8">{{selectedUserResource.id}}</div>
+
+    <div class="ui-g-4">User: </div>
+    <div class="ui-g-8">{{selectedUserResource?.user?.firstName}} {{selectedUserResource?.user?.lastName}}</div>
+
+    <div class="ui-g-4">Resource: </div>
+    <div class="ui-g-8">{{selectedUserResource?.resource?.name}}</div>
+
+    <div class="ui-g-4">Priority: </div>
+    <div class="ui-g-8">{{selectedUserResource.priority}}</div>
+
+    <div class="ui-g-4">Type: </div>
+    <div class="ui-g-8">{{selectedUserResource.type}}</div>
+
+    <div class="ui-g-4">State: </div>
+    <div class="ui-g-8">{{selectedUserResource.state}}</div>
+
+    <div class="ui-g-2">Add Time: </div>
+    <div class="ui-g-4">{{selectedUserResource.addTime}}</div>
+    <div class="ui-g-2">Del Time: </div>
+    <div class="ui-g-4">{{selectedUserResource.delTime}}</div>
+
+    <div class="ui-g-2">Date from: </div>
+    <div class="ui-g-4">{{selectedUserResource.dateFrom}}</div>
+    <div class="ui-g-2">Date to: </div>
+    <div class="ui-g-4">{{selectedUserResource.dateTo}}</div>
+
+    <div class="ui-g-2">Note: </div>
+    <div class="ui-g-10">{{selectedUserResource.note}}</div>
+
+    <div class="ui-g-4">Parent: </div>
+    <div *ngIf="selectedUserResource.parentUserResources != null" class="ui-g-8">{{selectedUserResource?.parentUserResources?.id}}:
+      {{selectedUserResource?.parentUserResources?.user?.firstName}}
+      {{selectedUserResource?.parentUserResources?.user?.lastName}}
+      - {{selectedUserResource?.parentUserResources?.resource?.name}}
+    </div>
+
+  </div>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>

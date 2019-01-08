@@ -59,6 +59,9 @@
           <li (click)="showProfile()"><a>Profile<span style="font-size:16px;"
                                                       class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
           </li>
+          <li (click)="showTicket()"><a>Send ticket<span style="font-size:16px;"
+                                                             class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a>
+          </li>
           <li (click)="showAdminPanel()"><a>Admin Panel<span style="font-size:16px;"
                                                              class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
           </li>
@@ -75,7 +78,11 @@
         <app-user-table-info></app-user-table-info>
       </div>
       <ng-template #profile>
+        <div *ngIf="profileIsOn; else ticket">
         <app-user-profile></app-user-profile>
+        </div>
+      </ng-template>
+      <ng-template #ticket>
       </ng-template>
     </div>
   </div>

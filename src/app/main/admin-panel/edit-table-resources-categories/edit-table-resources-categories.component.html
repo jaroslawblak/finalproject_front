@@ -1,0 +1,264 @@
+<p-dataView #dv [value]="resources" [paginator]="true" [rows]="5" paginatorPosition="both" filterBy="firstName">
+
+  <p-header>
+    <div class="ui-helper-clearfix">
+      <div class="ui-g">
+        <div class="ui-g-12 ui-md-4">
+          <span style="font-size: 24px; padding-top: 7px"> Resources table info</span>
+        </div>
+        <div class="ui-g-6 ui-md-4 filter-container">
+          <div style="position:relative">
+            <input type="search" style="color: #1a1a1a" pInputText placeholder="Search by name" (keyup)="dv.filter($event.target.value)">
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-3" style="text-align:right; padding-top: 7px">
+          <p-button label="ADD NEW" (onClick)="addNewRes()"></p-button>
+        </div>
+        <div class="ui-g-6 ui-md-1" style="text-align:right">
+          <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+        </div>
+      </div>
+    </div>
+  </p-header>
+  <ng-template let-res pTemplate="listItem">
+    <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+      <div class="ui-g-12 ui-md-3" style="text-align:center; padding-top: 50px" >
+        <img src="assets/images/Resources.png" width="60">
+      </div>
+      <div class="ui-g-12 ui-md-6 car-details">
+        <div class="ui-g" style="font-size: 16px">
+          <div class="ui-g-2 ui-sm-6">Name: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{res.name}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">Type: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{res.type}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">State: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{res.state}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">Add time: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{res.addTime}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">Place: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{res.place.name}}</b></div>
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+        <button pButton type="button" label="View" icon="pi pi-eye" (click)="selectRes($event,res)"></button>
+      </div>
+      <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+        <button pButton type="button" label="Edit" icon="pi pi-pencil" (click)="editRes($event,res)"></button>
+      </div>
+      <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+        <button pButton type="button" label="Delete" icon="pi pi-times-circle" (click)="removeRes($event,res)"></button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template let-res pTemplate="gridItem">
+    <div style="padding:.5em" class="ui-g-12 ui-md-3">
+      <p-panel [header]="res.name" [style]="{'text-align':'center'}">
+        <img src="assets/images/Resources.png" width="60">        <!--<div class="car-detail">{{car.year}} - {{car.color}}</div>-->
+        <hr class="ui-widget-content" style="border-top:0">
+        <button pButton type="button" style="margin-right: 10px" label="View" icon="pi pi-eye" (click)="selectRes($event,res)"></button>
+        <button pButton type="button" style="margin-right: 10px"label="Edit" icon="pi pi-pencil" (click)="editRes($event,res)"></button>
+        <button pButton type="button" style="margin-top: 10px"label="Delete" icon="pi pi-times-circle" (click)="removeRes($event,res)"></button>
+      </p-panel>
+    </div>
+  </ng-template>
+</p-dataView>
+
+<p-dialog header="Add resources" [(visible)]="addRes" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <form ngNativeValidate #addResForm="ngForm" (ngSubmit) = "saveNewRes(addResForm)">
+    <div class="ui-g" style="width: 550px" >
+      <div class="ui-g-12" style="text-align:center">
+        <img src="assets/images/user.png" width="60">
+      </div>
+      <div class="form-group">
+        <div class="ui-g-2"><label style="margin-top: 5px">Name: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input name="firstName"id="name"  class="form-control"  type="text" required [(ngModel)]="name" name="name">
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Type: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input name="type" id="type"  class="form-control"  type="text" required [(ngModel)]="type" name="type">
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">State: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input name="state" id="state"  class="form-control"  type="text" required [(ngModel)]="state" name="state">
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">External ID: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input name="externalId" id="externalId"  class="form-control"  type="text" required [(ngModel)]="externalId" name="externalId">
+          </div>
+        </div>
+        <div class="ui-g-4"><label style="margin-top: 5px">Place: </label></div>
+        <div class="ui-g-8">
+          <ng-multiselect-dropdown *ngIf="places!= null"
+                                   [placeholder]="'Choose a place'"
+                                   [data]="places"
+                                   [(ngModel)]="selectedPlace"
+                                   name="selectedPlace"
+                                   [settings]="PlaceSettings">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="ui-g-4"><label style="margin-top: 5px">Categories: </label></div>
+        <div class="ui-g-8">
+          <ng-multiselect-dropdown *ngIf="categories!= null"
+                                   [placeholder]="'Choose a categories'"
+                                   [data]="categories"
+                                   [(ngModel)]="selectedCategories"
+                                   name="selectedCategories"
+                                   [settings]="CategoriesSettings">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="ui-g-4"><label style="margin-top: 5px">Parent: </label></div>
+        <div class="ui-g-8">
+          <ng-multiselect-dropdown *ngIf="resources!= null"
+                                   [placeholder]="'Choose a parent'"
+                                   [data]="resources"
+                                   [(ngModel)]="selectedParentRes"
+                                   name="selectedParentUser"
+                                   [settings]="ParentResSettings">
+          </ng-multiselect-dropdown>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Add time: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input [(ngModel)]="addTime"  class="form-control" required type="date" name="addTime" >
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Del time: </label></div>
+        <div class="ui-g-4">
+          <div class="ui-inputgroup">
+            <input [(ngModel)]="delTime"  class="form-control"  type="date" name="delTime" >
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px"><label style="margin-top: 5px">Description: </label></label></div>
+        <div class="ui-g-10">
+          <div class="ui-inputgroup">
+            <textarea name="description"[(ngModel)]="description"  class="form-control" rows="5" cols="50"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="ui-g-6" style="margin-top: 15px">
+      </div>
+      <div class="ui-g-6" style="margin-top: 15px">
+        <button pButton type="submit" style="float: right; margin-right: 50px; height: 30px" label="Save" (onClick)="saveNewRes(addResForm)"></button>
+      </div>
+    </div>
+  </form>
+</p-dialog>
+<p-dialog header="Edit resource" [(visible)]="displayEditDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <div class="ui-g" *ngIf="selectedRes" style="width: 550px" >
+    <form ngNativeValidate  #editResForm="ngForm" ngNativeValidate (ngSubmit) = "saveEditedRes(editResForm)">
+      <div class="ui-g" style="width: 550px" >
+        <div class="ui-g-12" style="text-align:center">
+          <img src="assets/images/user.png" width="60">
+        </div>
+        <div class="form-group">
+          <div class="ui-g-2"><label style="margin-top: 5px">Name: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="firstName"id="name"  class="form-control"  type="text" required [(ngModel)]="this.selectedRes.name" name="name">
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">Type: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="type" id="type"  class="form-control"  type="text" required [(ngModel)]="this.selectedRes.type" name="type">
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">State: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="state" id="state"  class="form-control"  type="text" required [(ngModel)]="this.selectedRes.state" name="state">
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">External ID: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="externalId" id="externalId"  class="form-control"  type="text" required [(ngModel)]="this.selectedRes.externalId" name="externalId">
+            </div>
+          </div>
+          <div class="ui-g-4"><label style="margin-top: 5px">Place: </label></div>
+          <div class="ui-g-8">
+            <ng-multiselect-dropdown *ngIf="places!= null"
+                                     [placeholder]="'Choose a place'"
+                                     [data]="places"
+                                     [(ngModel)]="selectedPlace"
+                                     name="selectedPlace"
+                                     [settings]="PlaceSettings">
+            </ng-multiselect-dropdown>
+          </div>
+          <div class="ui-g-4"><label style="margin-top: 5px">Categories: </label></div>
+          <div class="ui-g-8">
+            <ng-multiselect-dropdown *ngIf="categories!= null"
+                                     [placeholder]="'Choose a categories'"
+                                     [data]="categories"
+                                     [(ngModel)]="selectedCategories"
+                                     name="selectedCategories"
+                                     [settings]="CategoriesSettings">
+            </ng-multiselect-dropdown>
+          </div>
+          <div class="ui-g-4"><label style="margin-top: 5px">Parent: </label></div>
+          <div class="ui-g-8">
+            <ng-multiselect-dropdown *ngIf="resources!= null"
+                                     [placeholder]="'Choose a parent'"
+                                     [data]="resources"
+                                     [(ngModel)]="selectedParentRes"
+                                     name="selectedParentUser"
+                                     [settings]="ParentResSettings">
+            </ng-multiselect-dropdown>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">Add time: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="this.selectedRes.addTime"  class="form-control" required type="date" name="addTime" >
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">Del time: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input [(ngModel)]="this.selectedRes.delTime"  class="form-control"  type="date" name="delTime" >
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px"><label style="margin-top: 5px">Description: </label></label></div>
+          <div class="ui-g-10">
+            <div class="ui-inputgroup">
+              <textarea name="description"[(ngModel)]="this.selectedRes.description"  class="form-control" rows="5" cols="50"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-6" style="margin-top: 15px">
+        </div>
+        <div class="ui-g-6" style="margin-top: 15px">
+          <button pButton type="submit" style="float: right; margin-right: 50px; height: 30px" label="Save" (onClick)="saveNewRes(addResForm)"></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+
+<p-dialog header="Resource Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <div class="ui-g" *ngIf="selectedRow" style="width: 350px" >
+    <div class="ui-g-12" style="text-align:center">
+      <img src="assets/images/Resources.png" width="60">
+    </div>
+    <div class="ui-g-4">ID: </div>
+    <div class="ui-g-8">{{selectedRes.id}}</div>
+    <div class="ui-g-4">Name: </div>
+    <div class="ui-g-8">{{selectedRes.name}}</div>
+
+  </div>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+

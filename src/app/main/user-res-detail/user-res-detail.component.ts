@@ -1,14 +1,12 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Category} from '../../categories/category.model';
-import {MultiSelectModule} from 'primeng/multiselect';
-import {Resource} from '../../Resource.model';
+import {Component, OnInit} from '@angular/core';
+import {Category} from '../../model/category.model';
+import {Resource} from '../../model/Resource.model';
 import {ResourceService} from '../../resource.service';
-import {UserTableInfoComponent} from '../user-table-info/user-table-info.component';
 import {CategoryService} from '../../category.service';
 import {PlaceService} from '../../place.service';
-import {Place} from '../../place.model';
+import {Place} from '../../model/place.model';
 import {InfoTransferService} from '../../info-transfer.service';
-
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-user-res-detail',
@@ -50,7 +48,7 @@ export class UserResDetailComponent implements OnInit {
 
         }
       });
-    this.infoTransferService.displayEditState.subscribe(isActive => this.isActive = isActive);
+      this.infoTransferService.displayEditState.subscribe(isActive => this.isActive = isActive);
     });
   }
 
@@ -59,6 +57,7 @@ export class UserResDetailComponent implements OnInit {
       this.activeCategories = data;
     });
   }
+
   getAllCategories() {
     this.categoryService.getAllCategories().subscribe(data => {
       this.categories = data;
@@ -83,13 +82,31 @@ export class UserResDetailComponent implements OnInit {
 
   }
   dismissEdit() {
-     this.infoTransferService.changeDisplayEditState(false);
+    this.infoTransferService.changeDisplayEditState(false);
   }
 
-  updateResource() {
-    console.log(this.resource);
-    console.log(this.activePlace);
-
+  getDate(value: any) {
+    const datePipe = new DatePipe('en-US');
+    return datePipe.transform(value, 'yyyy/MM/dd');
+}
+  dropdownSettings() {
+    this.categorySettings = {
+      singleSelection: false,
+      textField: 'name',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
+    this.placeSettings = {
+      singleSelection: true,
+      textField: 'name',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 3,
+      allowSearchFilter: true
+    };
+    this.resourceSettings = this.placeSettings;
   }
 
 

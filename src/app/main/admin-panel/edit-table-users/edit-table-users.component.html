@@ -1,0 +1,307 @@
+<div class="container">
+<p-dataView #dv [value]="users" [paginator]="true" [rows]="5" paginatorPosition="both" filterBy="firstName">
+            [sortField]="sortField" [sortOrder]="sortOrder">
+
+  <p-header>
+    <div class="ui-helper-clearfix">
+      <div class="ui-g">
+        <div class="ui-g-12 ui-md-4">
+          <span style="font-size: 24px; padding-top: 7px"> User table info</span>
+        </div>
+        <div class="ui-g-6 ui-md-4 filter-container">
+          <div style="position:relative">
+            <input type="search" style="color: #1a1a1a" pInputText placeholder="Search by name" (keyup)="dv.filter($event.target.value)">
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-3" style="text-align:right; padding-top: 7px">
+          <p-button label="ADD NEW" (onClick)="addNewUser()"></p-button>
+        </div>
+        <div class="ui-g-6 ui-md-1" style="text-align:right">
+          <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+        </div>
+      </div>
+    </div>
+  </p-header>
+  <ng-template let-user pTemplate="listItem">
+    <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+      <div class="ui-g-12 ui-md-3" style="text-align:center; padding-top: 50px" >
+        <img src="assets/images/user.png" width="60">
+      </div>
+      <div class="ui-g-12 ui-md-6 car-details">
+        <div class="ui-g" style="font-size: 16px">
+          <div class="ui-g-2 ui-sm-6">First name: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{user.firstName}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">Last name: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{user.lastName}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">Email: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{user.email}}</b></div>
+
+          <div class="ui-g-2 ui-sm-6">Role: </div>
+          <div class="ui-g-10 ui-sm-6"><b>{{user.role}}</b></div>
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+        <button pButton type="button" label="View" icon="pi pi-eye" (click)="selectUser($event,user)"></button>
+      </div>
+      <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+        <button pButton type="button" label="Edit" icon="pi pi-pencil" (click)="editUser($event,user)"></button>
+      </div>
+      <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+        <button pButton type="button" label="Delete" icon="pi pi-times-circle" (click)="removeUser($event,user)"></button>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template let-user pTemplate="gridItem">
+    <div style="padding:.5em" class="ui-g-12 ui-md-3">
+      <p-panel [header]="user.firstName" [style]="{'text-align':'center'}">
+        <img src="assets/images/userb.png" width="60">
+        <!--<div class="car-detail">{{car.year}} - {{car.color}}</div>-->
+        <hr class="ui-widget-content" style="border-top:0">
+          <button pButton type="button" style="margin-right: 10px" label="View" icon="pi pi-eye" (click)="selectUser($event,user)"></button>
+          <button pButton type="button" style="margin-right: 10px"label="Edit" icon="pi pi-pencil" (click)="editUser($event,user)"></button>
+          <button pButton type="button" style="margin-top: 10px"label="Delete" icon="pi pi-times-circle" (click)="removeUser($event,user)"></button>
+      </p-panel>
+    </div>
+  </ng-template>
+</p-dataView>
+
+<p-dialog header="Add user" [(visible)]="addUser" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <form ngNativeValidate #addUserForm="ngForm" (ngSubmit) = "saveNewUser(addUserForm)">
+  <div class="ui-g" style="width: 550px" >
+    <div class="ui-g-12" style="text-align:center">
+      <img src="assets/images/user.png" width="60">
+    </div>
+      <div class="form-group">
+        <div class="ui-g-2"><label style="margin-top: 5px">First name: </label></div>
+      <div class="ui-g-4">
+        <div class="ui-inputgroup">
+          <input name="firstName"id="firstName"  class="form-control"  type="text" required [(ngModel)]="firstName" name="firstName">
+
+        </div>
+    </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Last name: </label></div>
+    <div class="ui-g-4">
+      <div class="ui-inputgroup">
+        <input name="lastName" id="lastName"  class="form-control"  type="text" required [(ngModel)]="lastName" name="lastName">
+      </div>
+    </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Email: </label></div>
+    <div class="ui-g-4">
+      <div class="ui-inputgroup">
+        <input name="email" id="email"  class="form-control"  type="text"  required [(ngModel)]="email" name="email">
+      </div>
+    </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Password: </label></div>
+    <div class="ui-g-4">
+      <div class="ui-inputgroup">
+        <input name="password" id="password"  class="form-control"  type="text"  required [(ngModel)]="password" name="password">
+      </div>
+    </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Type: </label></div>
+    <div class="ui-g-4">
+      <div class="ui-inputgroup">
+        <input name="type" id="type"  class="form-control"  type="text" required [(ngModel)]="type" name="type">
+      </div>
+    </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">State: </label></div>
+    <div class="ui-g-4">
+      <div class="ui-inputgroup">
+        <input name="state" id="state"  class="form-control"  type="text" required [(ngModel)]="state" name="state">
+      </div>
+    </div>
+        <div class="ui-g-4"><label style="margin-top: 5px">Parent: </label></div>
+    <div class="ui-g-8">
+      <ng-multiselect-dropdown *ngIf="users!= null"
+                               [placeholder]="'Choose a parent'"
+                               [data]="users"
+                               [(ngModel)]="selectedParentUser"
+                                name="selectedParentUser"
+                               [settings]="ParentUserSettings">
+      </ng-multiselect-dropdown>
+    </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Auth key: </label></div>
+    <div class="ui-g-4">
+      <div class="ui-inputgroup">
+        <input name="authKey" id="authKey"  class="form-control"  type="text" [(ngModel)]="authKey" name="authKey">
+      </div>
+    </div>
+        <div class="ui-g-2"><label style="margin-top: 5px">Role: </label></div>
+        <div class="ui-g-4">
+          <div class="form-group">
+            <div class="form-control">
+              <label class="radio-inline">
+                <input type="radio" value="USER" name="role" [(ngModel)]="role">
+                USER
+              </label>
+              <label class="radio-inline">
+                <input type="radio" value="ADMIN" name="role" [(ngModel)]="role">
+                ADMIN
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-2"><label style="margin-top: 5px"><label style="margin-top: 5px">Note: </label></label></div>
+        <div class="ui-g-10">
+          <div class="ui-inputgroup">
+            <textarea name="note"[(ngModel)]="note"  class="form-control" rows="5" cols="50"></textarea>
+          </div>
+        </div>
+  </div>
+    <div class="ui-g-6" style="margin-top: 15px">
+    </div>
+    <div class="ui-g-6" style="margin-top: 15px">
+      <button pButton type="submit" style="float: right; margin-right: 50px; height: 30px" label="Save" (onClick)="saveNewUser(addUserForm)"></button>
+    </div>
+  </div>
+  </form>
+</p-dialog>
+<p-dialog header="Edit user" [(visible)]="displayEditDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <div class="ui-g" *ngIf="selectedUser" style="width: 550px" >
+    <form ngNativeValidate  #editUserForm="ngForm" ngNativeValidate (ngSubmit) = "saveEditedUser(editUserForm)">
+      <div class="ui-g" style="width: 550px" >
+        <div class="ui-g-12" style="text-align:center">
+          <img src="assets/images/user.png" width="60">
+        </div>
+        <div class="form-group">
+          <div class="ui-g-2"><label style="margin-top: 5px">First name: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="firstName"id="firstName"  class="form-control"  type="text" required [(ngModel)]="this.selectedUser.firstName">
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">Last name: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="lastName" id="lastName"  class="form-control"  type="text" required [(ngModel)]="this.selectedUser.lastName">
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">Email: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="email" id="email"  class="form-control"  type="text" required [(ngModel)]="this.selectedUser.email">
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">Password: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="password" id="password"  class="form-control"  type="text" required [(ngModel)]="this.selectedUser.password">
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">Type: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="type" id="type"  class="form-control"  type="text" required [(ngModel)]="this.selectedUser.type" >
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">State: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="state" id="state"  class="form-control"  type="text" required [(ngModel)]="this.selectedUser.state">
+            </div>
+          </div> <div class="ui-g-2"><label style="margin-top: 5px">Add time: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="addTime" id="addTime"  class="form-control"  type="date" required [(ngModel)]="this.selectedUser.addTime">
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">Del time: </label></div>
+          <div class="ui-g-4">
+            <div class="ui-inputgroup">
+              <input name="delTime" id="delTime"  class="form-control"  type="date" [(ngModel)]="this.selectedUser.delTime" >
+            </div>
+          </div>
+          <div class="ui-g-4"><label style="margin-top: 5px">Parent: </label></div>
+          <div class="ui-g-8">
+            <ng-multiselect-dropdown *ngIf="users!= null"
+                                     [placeholder]="'Choose a parent'"
+                                     [data]="users"
+                                     [(ngModel)]="this.selectedParentUser"
+                                     name="selectedParentUser"
+                                     [settings]="ParentUserSettings">
+            </ng-multiselect-dropdown>
+          </div>
+          <div class="ui-g-3"><label style="margin-top: 5px">Auth key and role: </label></div>
+          <div class="ui-g-5">
+            <div class="ui-inputgroup">
+              <input required name="authKey" id="authKey"  class="form-control"  type="text" [(ngModel)]="this.selectedUser.authKey">
+            </div>
+          </div>
+          <div class="ui-g-4">
+            <div class="form-group">
+              <div class="form-control">
+                <label class="radio-inline">
+                  <input type="radio" value="USER" name="role" [(ngModel)]="role">
+                  USER
+                </label>
+                <label class="radio-inline">
+                  <input type="radio" value="ADMIN" name="role" [(ngModel)]="role">
+                  ADMIN
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="ui-g-2"><label style="margin-top: 5px">Note: </label></div>
+            <div class="ui-g-10">
+              <div class="ui-inputgroup">
+                <textarea name="note"[(ngModel)]="this.selectedUser.note"  class="form-control" rows="5" cols="50">{{this.selectedUser.note}}</textarea>
+              </div>
+             </div>
+        </div>
+        <div class="ui-g-6" style="margin-top: 15px">
+        </div>
+        <div class="ui-g-6" style="margin-top: 15px">
+          <button pButton type="submit" style="float: right; margin-right: 50px; height: 30px" label="Update" (onClick)="saveEditedUser(editUserForm)"></button>
+        </div>
+      </div>
+    </form>
+  </div>
+</p-dialog>
+
+<p-dialog header="User Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+  <div class="ui-g" *ngIf="selectedUser" style="width: 350px" >
+    <div class="ui-g-12" style="text-align:center">
+      <img src="assets/images/user.png" width="60">
+    </div>
+    <div class="ui-g-4">ID: </div>
+    <div class="ui-g-8">{{selectedUser.id}}</div>
+    <div class="ui-g-4">First name: </div>
+    <div class="ui-g-8">{{selectedUser.firstName}}</div>
+
+    <div class="ui-g-4">Last name: </div>
+    <div class="ui-g-8">{{selectedUser.lastName}}</div>
+
+    <div class="ui-g-4">Email: </div>
+    <div class="ui-g-8">{{selectedUser.email}}</div>
+
+    <div class="ui-g-4">Password: </div>
+    <div class="ui-g-8">{{selectedUser.password}}</div>
+
+    <div class="ui-g-4">Type: </div>
+    <div class="ui-g-8">{{selectedUser.type}}</div>
+
+    <div class="ui-g-4">State: </div>
+    <div class="ui-g-8">{{selectedUser.state}}</div>
+
+    <div class="ui-g-4">Role: </div>
+    <div class="ui-g-8">{{selectedUser.role}}</div>
+
+    <div class="ui-g-4">Add Time: </div>
+    <div class="ui-g-8">{{selectedUser.addTime}}</div>
+    <div class="ui-g-4">Del Time: </div>
+    <div class="ui-g-8">{{selectedUser.delTime}}</div>
+
+    <div class="ui-g-4">Parent: </div>
+    <div class="ui-g-8">{{selectedUser?.parentUser?.firstName}}  {{selectedUser?.parentUser?.lastName}}</div>
+
+    <div class="ui-g-4">Auth key: </div>
+    <div class="ui-g-8">{{selectedUser.authKey}}</div>
+
+
+  </div>
+</p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+</div>

@@ -1,6 +1,7 @@
+import {Place} from './place.model';
 
 export class Resource {
-  private _id: number;
+  id: number;
   name: string;
   description: string;
   type: number;
@@ -8,7 +9,7 @@ export class Resource {
   addTime: any;
   delTime: any;
   externalId: number;
-  placeId: string;
-  parentId: number;
+  place: Place;
+  parentResource: Resource;
 }
 

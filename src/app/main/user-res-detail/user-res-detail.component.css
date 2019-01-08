@@ -75,6 +75,18 @@ input[type="text"], [type="date"], textarea {
   padding: 10px;
 }
 
+.center-td{
+  text-align: center;
+  vertical-align: middle;
+  font-size: 15px;
+  margin-left: 20px;
+}
+.dropdown-list{
+  background: #222222;
+  color: whitesmoke;
+}
+
+
 .green{color:#47e900}
 .red{color:#f00808}
 .paleyellow{color:#f8d97c}

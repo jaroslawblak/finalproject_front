@@ -11,7 +11,7 @@
 <div class="container">
 
     <div class="row" style="height: 250px; width: 90%; margin: auto; coverflow: auto">
-      <div class="table-responsive" style="padding: 15px; max-width: 80%; margin: 0 auto">
+      <div class="table-responsive" style="padding: 15px; max-width: 80%; margin: 0 320px">
         <table id="main-table" class="table exotic-table">
           <thead>
           <tr class="text-center">
@@ -52,7 +52,7 @@
           </tr>
           <tr class="text-center">
             <td>Parent User:</td>
-            <td>{{user.parentUser}}</td>
+            <td>{{user?.parentUser?.firstName}} {{user?.parentUser?.lastName}}</td>
           </tr>
           <tr class="text-center">
             <td>Note:</td>

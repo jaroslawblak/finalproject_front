@@ -1,0 +1,15 @@
+
+.ui-grid-row {
+  text-align: center;
+  background: transparent;
+}
+.ui-grid {
+  margin: 10px 0px;
+}
+.ui-grid-row > div {
+  padding: 4px 10px;
+}
+.accdecButton{
+  display: block;
+  margin: auto;
+}

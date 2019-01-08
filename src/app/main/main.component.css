@@ -16,7 +16,7 @@
 
 nav.sidebar.navbar {
   border-radius: 0px;
-  margin-top: 55px;
+  margin-top: 45px;
 
 }
 
@@ -58,7 +58,7 @@ nav.sidebar, .main{
   nav.sidebar .navbar-brand, nav.sidebar .navbar-header{
     text-align: center;
     width: 100%;
-    margin-left: 0px;
+    margin-left: -10px;
   }
 
   /*Center Icons*/

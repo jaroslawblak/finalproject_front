@@ -22,13 +22,18 @@
   </div>
 
   <div class="row" style="margin-top: 20px ">
-    <div class="row" style="height: 250px; width: 80%; margin: 0 180px; z-index: 7000">
+    <div class="row" style="height: 250px; width: 80%; margin: 0 220px; z-index: 7000">
       <div class="table-responsive" [style.opacity]="getOpacity()" style="padding: 15px; max-height: 300px" id="resourceTable">
         <table id="main-table" class="table exotic-table">
           <thead>
           <tr class="text-center">
             <th colspan="2">Resources for user</th>
-            <th colspan="2">{{user.firstName}}</th>
+            <th colspan="2">{{user.firstName}}
+              <button style="float: right; background-color: transparent; border: none" class="glyphicon glyphicon-retweet purple"
+                      (click)="showCheckedTickets()"></button>
+              <button style="float: right; background-color: transparent; border: none" class="glyphicon glyphicon-envelope turquoise "
+                      (click)="showNotCheckedTickets()"></button>
+            </th>
           </tr>
           <tr class="text-center">
             <th>ID</th>
@@ -41,25 +46,23 @@
           <tr *ngFor="let res of resources; let myIndex = index">
             <td>{{myIndex + 1}}</td>
             <td>{{res.name}}</td>
-            <td>{{res.placeId.name}}</td>
+            <td>{{res.place.name}}</td>
             <td>
               <button style="background-color: transparent; border: none; color: greenyellow"
                       class="glyphicon glyphicon-info-sign blue" (click)="showView(res.id)"></button>
               <button style="background-color: transparent; border: none" class="glyphicon glyphicon-pencil paleyellow"
                       (click)="showEdit(res.id)"></button>
               <button style="background-color: transparent; border: none" class="glyphicon glyphicon-remove red"
-                      (click)="showEdit()"></button>
+              (click)="removeEdit(res.id)"></button>
+
             </td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
-    <div style="height: 90px"></div>
-
-    <p-dialog *ngIf="resource != null" [transitionOptions]="'0ms'" [visible]="displayView" [modal]="true" [dismissableMask]="true" [responsive]="true"
-              [maximizable]="true" [baseZIndex]="10000" [contentStyle]="{'max-height':'200px'}">
-      <div class="row" style=" width: 100%;">
+    <div class="row" style="height: 90px"></div>
+      <div *ngIf="displayView" class="row" style="width: 100%; margin-left: 40px">
 
         <div class="col-md-4">
           <div class="table-responsive">
@@ -144,12 +147,84 @@
           </div>
         </div>
       </div>
-    </p-dialog>
-      <p-dialog  [style]="{height: '20px'}" [(visible)]="displayEdit" [modal]="true"
-                [dismissableMask]="true"  [responsive]="true"
-                [maximizable]="true" [baseZIndex]="1000">
-        <app-user-res-detail></app-user-res-detail>
-      </p-dialog>
+    <div *ngIf="displayNotCheckedTickets" class="row" style="width: 100%; margin-left: 40px">
+
+      <div class="col-md-12">
+        <div class="table-responsive" >
+          <div class="table-custom">
+          <p-table [value]="notActiveTicketOwners" >
+            <ng-template pTemplate="header" style="{'background': '#1a1a1a'; 'color': 'white'}">
+              <tr>
+                <th>ID</th>
+                <th>Resource:</th>
+                <th>Raporter:</th>
+                <th>Added:</th>
+                <th>Date From:</th>
+                <th>Date To:</th>
+                <th>Note:</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-ticket>
+              <tr>
+                <td>{{ticket.id}}</td>
+                <td>{{ticket.resource.name}}</td>
+                <td>{{ticket.user.firstName}} {{ticket.user.lastName}}</td>
+                <td>{{ticket.addTime}}</td>
+                <td>{{ticket.dateFrom}}</td>
+                <td>{{ticket.dateTo}}</td>
+                <td>{{ticket.note}}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="footer">
+              <tr>
+                <td colspan="7">Totals {{notActiveTicketOwners.length}} </td>
+              </tr>
+            </ng-template>
+          </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="displayCheckedTickets" class="row" style="width: 100%; margin-left: 40px">
+
+      <div class="col-md-12">
+        <div class="table-responsive" >
+          <div class="table-custom">
+            <p-table [value]="notActiveTicketOwners" >
+              <ng-template pTemplate="header" style="{'background': '#1a1a1a'; 'color': 'white'}">
+                <tr>
+                  <th>ID</th>
+                  <th>Resource:</th>
+                  <th>Raporter:</th>
+                  <th>Added:</th>
+                  <th>Date From:</th>
+                  <th>Date To:</th>
+                  <th>Note:</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-ticket>
+                <tr>
+                  <td>{{ticket.id}}</td>
+                  <td>{{ticket.resource.name}}</td>
+                  <td>{{ticket.user.firstName}} {{ticket.user.lastName}}</td>
+                  <td>{{ticket.addTime}}</td>
+                  <td>{{ticket.dateFrom}}</td>
+                  <td>{{ticket.dateTo}}</td>
+                  <td>{{ticket.note}}</td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="footer">
+                <tr>
+                  <td colspan="7">Totals {{notActiveTicketOwners.length}} </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <app-user-res-detail *ngIf="displayEdit" style="margin-top: -400px"></app-user-res-detail>
   </div>
 </div>
 

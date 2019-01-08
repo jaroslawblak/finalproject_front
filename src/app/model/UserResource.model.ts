@@ -13,6 +13,6 @@ export class UserResource {
   note: string;
   user: User;
   resource: Resource;
-  userResource: UserResource;
+  parentUserResources: UserResource;
 }
 

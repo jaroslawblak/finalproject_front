@@ -14,6 +14,13 @@ body{
   width: 10px;
   background-color: #F5F5F5;
 }
+.table-custom>thead>tr>th{border-bottom: none;}
+.exotic-table{
+  color:#fff;
+  background: #191919;
+  text-align: center;
+  border: none;
+}
 
 .table>thead>tr>th{border-bottom: none;}
 .exotic-table{

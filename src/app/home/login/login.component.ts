@@ -2,8 +2,8 @@ import {Component, Injectable, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
-import {User} from '../../User.model';
-import {Resource} from '../../Resource.model';
+import {User} from '../../model/User.model';
+import {Resource} from '../../model/Resource.model';
 
 
 @Component({
