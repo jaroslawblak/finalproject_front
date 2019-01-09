@@ -63,7 +63,7 @@
 </p-dataView>
 
 <p-dialog header="Add category" [(visible)]="addCat" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
-  <form ngNativeValidate #addCatForm="ngForm" (ngSubmit) = "saveNewCat(addCatForm)">
+  <form  #addCatForm="ngForm" (ngSubmit) = "saveNewCat(addCatForm)">
     <div class="ui-g" style="width: 550px" >
       <div class="ui-g-12" style="text-align:center">
         <img src="assets/images/Category.png" width="60">

@@ -68,7 +68,7 @@
 </p-dataView>
 
 <p-dialog header="Add user" [(visible)]="addUser" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
-  <form ngNativeValidate #addUserForm="ngForm" (ngSubmit) = "saveNewUser(addUserForm)">
+  <form #addUserForm="ngForm"   (ngSubmit) = "saveNewUser(addUserForm)">
   <div class="ui-g" style="width: 550px" >
     <div class="ui-g-12" style="text-align:center">
       <img src="assets/images/user.png" width="60">
@@ -77,38 +77,37 @@
         <div class="ui-g-2"><label style="margin-top: 5px">First name: </label></div>
       <div class="ui-g-4">
         <div class="ui-inputgroup">
-          <input name="firstName"id="firstName"  class="form-control"  type="text" required [(ngModel)]="firstName" name="firstName">
-
+          <input  class="form-control"  type="text" required [(ngModel)]="firstName" name="firstName">
         </div>
     </div>
         <div class="ui-g-2"><label style="margin-top: 5px">Last name: </label></div>
     <div class="ui-g-4">
       <div class="ui-inputgroup">
-        <input name="lastName" id="lastName"  class="form-control"  type="text" required [(ngModel)]="lastName" name="lastName">
+        <input   class="form-control"  type="text" required [(ngModel)]="editUserForm.lastName" name="lastName">
       </div>
     </div>
         <div class="ui-g-2"><label style="margin-top: 5px">Email: </label></div>
     <div class="ui-g-4">
       <div class="ui-inputgroup">
-        <input name="email" id="email"  class="form-control"  type="text"  required [(ngModel)]="email" name="email">
+        <input  class="form-control"  type="text"  required [(ngModel)]="email" name="email">
       </div>
     </div>
         <div class="ui-g-2"><label style="margin-top: 5px">Password: </label></div>
     <div class="ui-g-4">
       <div class="ui-inputgroup">
-        <input name="password" id="password"  class="form-control"  type="text"  required [(ngModel)]="password" name="password">
+        <input name="password"   class="form-control"  type="text"  required [(ngModel)]="password">
       </div>
     </div>
         <div class="ui-g-2"><label style="margin-top: 5px">Type: </label></div>
     <div class="ui-g-4">
       <div class="ui-inputgroup">
-        <input name="type" id="type"  class="form-control"  type="text" required [(ngModel)]="type" name="type">
+        <input name="type"   class="form-control"  type="text" required [(ngModel)]="type">
       </div>
     </div>
         <div class="ui-g-2"><label style="margin-top: 5px">State: </label></div>
     <div class="ui-g-4">
       <div class="ui-inputgroup">
-        <input name="state" id="state"  class="form-control"  type="text" required [(ngModel)]="state" name="state">
+        <input name="state"   class="form-control"  type="text" required [(ngModel)]="state">
       </div>
     </div>
         <div class="ui-g-4"><label style="margin-top: 5px">Parent: </label></div>
@@ -124,7 +123,7 @@
         <div class="ui-g-2"><label style="margin-top: 5px">Auth key: </label></div>
     <div class="ui-g-4">
       <div class="ui-inputgroup">
-        <input name="authKey" id="authKey"  class="form-control"  type="text" [(ngModel)]="authKey" name="authKey">
+        <input  class="form-control"  type="text" [(ngModel)]="authKey" name="authKey">
       </div>
     </div>
         <div class="ui-g-2"><label style="margin-top: 5px">Role: </label></div>

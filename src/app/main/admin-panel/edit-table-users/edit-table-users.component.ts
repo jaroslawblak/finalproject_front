@@ -21,6 +21,7 @@ export class EditTableUsersComponent implements OnInit {
   selectedParentUser: User[];
   emails: string[];
   passwords: string[];
+  editForm: NgForm;
 
   constructor(private userService: UserService, private confirmationService: ConfirmationService) {
     this.newUser = new User();

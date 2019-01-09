@@ -68,7 +68,7 @@
 </p-dataView>
 
 <p-dialog header="Add resources" [(visible)]="addRes" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
-  <form ngNativeValidate #addResForm="ngForm" (ngSubmit) = "saveNewRes(addResForm)">
+  <form  #addResForm="ngForm" (ngSubmit) = "saveNewRes(addResForm)">
     <div class="ui-g" style="width: 550px" >
       <div class="ui-g-12" style="text-align:center">
         <img src="assets/images/user.png" width="60">
@@ -157,7 +157,7 @@
 </p-dialog>
 <p-dialog header="Edit resource" [(visible)]="displayEditDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
   <div class="ui-g" *ngIf="selectedRes" style="width: 550px" >
-    <form ngNativeValidate  #editResForm="ngForm" ngNativeValidate (ngSubmit) = "saveEditedRes(editResForm)">
+    <form   #editResForm="ngForm" ngNativeValidate (ngSubmit) = "saveEditedRes(editResForm)">
       <div class="ui-g" style="width: 550px" >
         <div class="ui-g-12" style="text-align:center">
           <img src="assets/images/user.png" width="60">

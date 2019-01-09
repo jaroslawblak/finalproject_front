@@ -3,7 +3,7 @@
                  acceptButtonStyleClass={test} rejectLabel='SCRAP' (onHide)="backToMenu()"></p-confirmDialog>
 
 <p-dialog header="RENT RESOURCE TICKET" [(visible)]="ticketRENT" [responsive]="true" showEffect="fade" [modal]="true" (onHide)="backToMenu()">
-  <form ngNativeValidate #rentResUser="ngForm" (ngSubmit)="sentNewTicket(rentResUser)">
+  <form #rentResUser="ngForm" (ngSubmit)="sentNewTicket(rentResUser)">
     <div class="ui-g-6" style="text-align:center">
       <div class="ui-g" style="width: 450px; padding: 20px">
         <div class="ui-g-12" style="text-align:center">
@@ -103,7 +103,7 @@
 
 <p-dialog header="SCRAP RESOURCE TICKET" [(visible)]="ticketSCRAP" [responsive]="true" showEffect="fade" [modal]="true"
           (onHide)="backToMenu()">
-  <form ngNativeValidate #scraptResUser="ngForm" (ngSubmit)="sentNewScrapTicket(scraptResUser)">
+  <form  #scraptResUser="ngForm" (ngSubmit)="sentNewScrapTicket(scraptResUser)">
     <div class="ui-g-6" style="text-align:center">
       <div class="ui-g" style="width: 450px; padding: 20px">
         <div class="ui-g-12" style="text-align:center">
