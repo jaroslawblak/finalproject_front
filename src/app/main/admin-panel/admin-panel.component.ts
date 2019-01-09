@@ -108,8 +108,7 @@ export class AdminPanelComponent implements OnInit {
   }
 
   paginate(event: Event) {
-    console.log(event.page)
-    if (event.page === 1) {
+    if (event['page'] === 1) {
       this.rentResource = true;
       this.scrapResource = false;
     } else {

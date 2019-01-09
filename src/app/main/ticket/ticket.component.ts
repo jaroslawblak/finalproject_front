@@ -58,6 +58,8 @@ export class TicketComponent implements OnInit {
     });
   }
   backToMenu() {
+    this.ticketRENT = false;
+    this.ticketSCRAP = false;
     this.router.navigateByUrl('/main');
   }
   sentNewTicket(rentResUser: NgForm) {

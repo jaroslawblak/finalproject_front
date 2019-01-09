@@ -1,0 +1,11 @@
+{
+  "/angular": {
+    "target":  {
+      "host": "demoresapp.com",
+      "protocol": "https:"
+    },
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "info"
+  }
+}
