@@ -3,6 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Place} from './model/place.model';
 import {Resource} from './model/Resource.model';
 import {Category} from './model/category.model';
+import {User} from './model/User.model';
 
 @Injectable({
   providedIn: 'root'

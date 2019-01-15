@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Resource} from './model/Resource.model';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {BehaviorSubject} from 'rxjs';
+import {User} from './model/User.model';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +53,7 @@ export class ResourceService {
       })
     };
     const url = 'http://localhost:8080/resources';
-    this.http.post<Resource>(url, resource, httpOptions).subscribe();
+    this.http.put<Resource>(url, resource, httpOptions).subscribe();
   }
   deleteResource(id: number) {
     const url = 'http://localhost:8080/resources/' + id;

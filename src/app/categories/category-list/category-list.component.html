@@ -11,15 +11,6 @@
     <h1 class="text-center">Categories</h1>
 
 
-    <!--&lt;!&ndash; You can now use your library component in app.component.html &ndash;&gt;-->
-    <!--<ngx-slick class="carousel" #slickModal="slick-modal" [config]="slideConfig" (afterChange)="afterChange($event)">-->
-
-      <!--<div ngxSlickItem *ngFor="let slide of slides" class="slide">-->
-        <!--<p>{{slide.name}}</p>-->
-        <!--<div class="well">-->
-          <!--<img src="{{ slide.imagePath }}" alt="">-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</ngx-slick>-->
+    <p-galleria [images]="images" panelWidth="600" panelHeight="313" [showCaption]="true" [style]="{margin: '0 120px'}"></p-galleria>
   </div>
 </div>

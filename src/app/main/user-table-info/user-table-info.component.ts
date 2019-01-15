@@ -11,6 +11,8 @@ import {InfoTransferService} from '../../info-transfer.service';
 import {TicketService} from '../../ticket.service';
 import {Ticket} from '../../model/ticket.model';
 import {UserService} from '../../user.service';
+import {ConfirmationService} from 'primeng/api';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-user-table-info',
@@ -25,6 +27,7 @@ export class UserTableInfoComponent implements OnInit {
   categories: Category[];
   userResources: UserResource[];
   user: User;
+  ticket: Ticket;
   displayEdit = false;
   displayView = false;
   id: number;
@@ -37,7 +40,8 @@ export class UserTableInfoComponent implements OnInit {
               private categoryService: CategoryService,
               private infoTransferService: InfoTransferService,
               private ticketService: TicketService,
-              private userService: UserService) {
+              private userService: UserService,
+              private confirmationService: ConfirmationService) {
     this.userResources = [];
     this.categories = [];
     this.resources = [];
@@ -55,7 +59,22 @@ export class UserTableInfoComponent implements OnInit {
   }
 
   removeEdit(id: number) {
+        this.ticket = new Ticket();
+        this.resourceService.getResource(id).subscribe(res => {
+          this.ticket.resource = res;
+          this.ticket.type = 0;
+          let now = Date.now();
+          this.ticket.addTime = formatDate(now, "yyyy-MM-dd", 'en-US');
+          this.ticket.firstName = this.user.firstName;
+          this.ticket.lastName = this.user.lastName;
+          this.ticket.email = this.user.email;
+          this.ticket.user = this.user;
+          let tempRes = this.resources.filter(res => res.id === id);
+          let index = this.resources.indexOf(tempRes[0]);
+          this.resources.splice(index, 1)
+          this.ticketService.saveTicket(this.ticket);
 
+      });
   }
   showCheckedTickets() {
     this.displayNotCheckedTickets = true;
@@ -64,6 +83,7 @@ export class UserTableInfoComponent implements OnInit {
     this.displayNotCheckedTickets = false;
     this.ticketService.getTicketsByOwner(this.user.id).subscribe(tickets => {
       this.notActiveTicketOwners = tickets;
+      console.log("test");
     });
   }
   showNotCheckedTickets() {

@@ -44,7 +44,7 @@ import {CardModule} from 'primeng/card';
 import {TableModule} from 'primeng/table';
 import {PaginatorModule} from 'primeng/paginator';
 import {SelectButtonModule} from 'primeng/selectbutton';
-
+import {GalleriaModule} from 'primeng/galleria';
 
 
 
@@ -109,7 +109,8 @@ const routes: Routes = [
     CardModule,
     TableModule,
     PaginatorModule,
-    SelectButtonModule
+    SelectButtonModule,
+    GalleriaModule
   ],
   providers: [UserResourcesService, AuthGuard, AdminGuard, ConfirmationService],
   bootstrap: [AppComponent]

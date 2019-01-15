@@ -31,6 +31,8 @@ export class UserService {
     return this.http.get<User>(url, this.httpOptions);
   }
 
+
+
   getUsers() {
     const url = 'http://localhost:8080/users/';
     return this.http.get<User[]>(url, this.httpOptions);

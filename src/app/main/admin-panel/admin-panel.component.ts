@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Table} from '../../model/table.model';
 import {InfoTransferService} from '../../info-transfer.service';
 import {Router} from '@angular/router';
@@ -6,6 +6,12 @@ import {Ticket} from '../../model/ticket.model';
 import {TicketService} from '../../ticket.service';
 import {SelectItem} from 'primeng/api';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {forEach} from '@angular/router/src/utils/collection';
+import {UserService} from '../../user.service';
+import {ResourceService} from '../../resource.service';
+import {PlaceService} from '../../place.service';
+import {DocumentService} from '../../document.service';
+import {CsvServiceService} from '../../csv-service.service';
 
 
 @Component({
@@ -35,9 +41,13 @@ export class AdminPanelComponent implements OnInit {
   notActiveTicketRent: Ticket[];
   notActiveTicketScrap: Ticket[];
   cols: any[];
+  CsvData: SelectItem[];
+  selectedCsvData: SelectItem[];
+  getCSV = false;
 
   constructor(private dataTransfer: InfoTransferService, private router: Router,
-              private ticketService: TicketService) {
+              private ticketService: TicketService,
+              private csvService: CsvServiceService) {
     this.tables = [
       {id: 1, title: 'Users'},
       {id: 2, title: 'User-Resources'},
@@ -47,30 +57,43 @@ export class AdminPanelComponent implements OnInit {
       {id: 6, title: 'Resources-Categories'},
       {id: 7, title: 'Category'},
       {id: 8, title: 'Children-of-resource'}
-      ];
+    ];
 
-      this.cols = [
-        { field: 'id', header: 'ID' },
-        { field: 'resource', header: 'Resource' },
-        { field: 'user', header: 'Raporter' },
-        { field: 'owner', header: 'Owner' },
-        { field: 'addTime', header: 'Added' },
-        { field: 'dateFrom', header: 'Dato From' },
-        { field: 'dateTo', header: 'Dato To' },
-        { field: 'Accept', header: 'Accept' },
-        { field: 'Decline', header: 'Decline' }
+    this.cols = [
+      {field: 'id', header: 'ID'},
+      {field: 'resource', header: 'Resource'},
+      {field: 'user', header: 'Raporter'},
+      {field: 'owner', header: 'Owner'},
+      {field: 'addTime', header: 'Added'},
+      {field: 'dateFrom', header: 'Dato From'},
+      {field: 'dateTo', header: 'Dato To'},
+      {field: 'Accept', header: 'Accept'},
+      {field: 'Decline', header: 'Decline'}
+    ];
+
+    this.CsvData = [
+      {label: 'Users', value: 'users'},
+      {label: 'Resources', value: 'resources'},
+      {label: 'Places', value: 'places'},
+      {label: 'Documents', value: 'documents'},
+      {label: 'Category', value: 'categories'},
+      {label: 'Ticket', value: 'tickets'},
+      {label: 'USER-RES', value: 'usersResources'},
+      {label: 'RES-CAT', value: 'rescat'},
+      {label: 'RES-RES', value: 'resres'}
     ];
   }
 
   ngOnInit() {
+
     this.ticketService.getNotActiveTicketRent().subscribe(ticketsR => {
       this.notActiveTicketRent = ticketsR;
       console.log(this.notActiveTicketRent);
       this.ticketService.getNotActiveTicketScrap().subscribe(ticketsS => {
         this.notActiveTicketScrap = ticketsS;
         console.log(this.notActiveTicketScrap);
+      });
     });
-  });
   }
 
   selectedTable(table: Table) {
@@ -79,19 +102,34 @@ export class AdminPanelComponent implements OnInit {
 
   showTickets() {
     this.checkTickets = true;
+    this.getCSV = false;
   }
 
+  generateCsv() {
+    this.checkTickets = false;
+    this.getCSV = true;
+  }
+
+  restCsv() {
+    this.selectedCsvData.forEach(data => this.takeEndpoint(data));
+  }
+
+  takeEndpoint(data: any) {
+      this.csvService.generateCsv(data);
+
+  }
   acceptRentTicket(id: number) {
     this.ticketService.acceptTicket(id);
     let tempTicket = this.notActiveTicketRent.filter(ticket => ticket.id === id);
     let index = this.notActiveTicketRent.indexOf(tempTicket[0]);
-    this.notActiveTicketRent.splice(index, 1)
+    this.notActiveTicketRent.splice(index, 1);
   }
+
   rejectRentTicket(id: number) {
     this.ticketService.rejectTicket(id);
     let tempTicket = this.notActiveTicketRent.filter(ticket => ticket.id === id);
     let index = this.notActiveTicketRent.indexOf(tempTicket[0]);
-    this.notActiveTicketRent.splice(index, 1)
+    this.notActiveTicketRent.splice(index, 1);
   }
 
   acceptScrapTicket(id: number) {
@@ -100,6 +138,7 @@ export class AdminPanelComponent implements OnInit {
     let index = this.notActiveTicketRent.indexOf(tempTicket[0]);
     this.notActiveTicketRent.splice(index, 1);
   }
+
   rejectScrapTicket(id: number) {
     this.ticketService.rejectTicket(id);
     let tempTicket = this.notActiveTicketScrap.filter(ticket => ticket.id === id);

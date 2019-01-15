@@ -23,6 +23,7 @@
 
   <div class="row" style="margin-top: 20px ">
     <div class="row" style="height: 250px; width: 80%; margin: 0 220px; z-index: 7000">
+
       <div class="table-responsive" [style.opacity]="getOpacity()" style="padding: 15px; max-height: 300px" id="resourceTable">
         <table id="main-table" class="table exotic-table">
           <thead>
@@ -54,7 +55,6 @@
                       (click)="showEdit(res.id)"></button>
               <button style="background-color: transparent; border: none" class="glyphicon glyphicon-remove red"
               (click)="removeEdit(res.id)"></button>
-
             </td>
           </tr>
           </tbody>
@@ -74,7 +74,7 @@
               </thead>
               <tbody>
               <tr>
-                <td colspan="3" class="text-center" style="padding: 5px; height: 135px">IMAGE</td>
+                <td colspan="3" class="text-center" style="padding: 5px; height: 135px"><img src="assets/images/tool64.png" width="50"></td>
               </tr>
               <tr>
                 <td align="left" style="padding: 20px">Name</td>
@@ -226,5 +226,6 @@
 
     <app-user-res-detail *ngIf="displayEdit" style="margin-top: -400px"></app-user-res-detail>
   </div>
+
 </div>
 
