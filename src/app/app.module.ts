@@ -45,7 +45,8 @@ import {TableModule} from 'primeng/table';
 import {PaginatorModule} from 'primeng/paginator';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {GalleriaModule} from 'primeng/galleria';
-
+import { CookieService } from 'ngx-cookie-service';
+import {AuthService} from './home/login/auth.service';
 
 
 const routes: Routes = [
@@ -112,7 +113,7 @@ const routes: Routes = [
     SelectButtonModule,
     GalleriaModule
   ],
-  providers: [UserResourcesService, AuthGuard, AdminGuard, ConfirmationService],
+  providers: [UserResourcesService, AuthGuard, AdminGuard, ConfirmationService, CookieService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
