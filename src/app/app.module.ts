@@ -1,7 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {RouterModule, Routes} from '@angular/router';
 import {AppComponent} from './app.component';
 import {MainComponent} from './main/main.component';
@@ -45,8 +45,10 @@ import {TableModule} from 'primeng/table';
 import {PaginatorModule} from 'primeng/paginator';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {GalleriaModule} from 'primeng/galleria';
-import { CookieService } from 'ngx-cookie-service';
 import {AuthService} from './home/login/auth.service';
+import {AuthenticationInterceptor} from './authentication.interceptor';
+import { EditTableTicketsComponent } from './main/admin-panel/edit-table-tickets/edit-table-tickets.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 
 const routes: Routes = [
@@ -63,6 +65,7 @@ const routes: Routes = [
   {path: 'main/admin/edit/Resources-Categories', component: EditTableResourcesCategoriesComponent},
   {path: 'main/admin/edit/Category', component: EditTableCategoryComponent},
   {path: 'main/admin/edit/Children-of-resource', component: EditTableChildrenOfResourceComponent},
+  {path: 'main/admin/edit/Tickets', component: EditTableTicketsComponent}
 ];
 
 @NgModule({
@@ -89,6 +92,7 @@ const routes: Routes = [
     EditTableCategoryComponent,
     EditTableChildrenOfResourceComponent,
     TicketComponent,
+    EditTableTicketsComponent,
 
   ],
   imports: [
@@ -111,9 +115,15 @@ const routes: Routes = [
     TableModule,
     PaginatorModule,
     SelectButtonModule,
-    GalleriaModule
+    GalleriaModule,
+    PdfViewerModule
   ],
-  providers: [UserResourcesService, AuthGuard, AdminGuard, ConfirmationService, CookieService, AuthService],
+  providers: [UserResourcesService, AuthGuard, AdminGuard, ConfirmationService, AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthenticationInterceptor,
+      multi: true
+    }],
   bootstrap: [AppComponent]
 })
 export class AppModule {

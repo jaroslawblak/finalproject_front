@@ -62,7 +62,7 @@
       </div>
     </div>
     <div class="row" style="height: 90px"></div>
-      <div *ngIf="displayView" class="row" style="width: 100%; margin-left: 40px">
+      <div *ngIf="displayView" [style.opacity]="getOpacity()" class="row" style="width: 100%; margin-left: 40px">
 
         <div class="col-md-4">
           <div class="table-responsive">
@@ -78,7 +78,7 @@
               </tr>
               <tr>
                 <td align="left" style="padding: 20px">Name</td>
-                <td colspan="2" class="text-center" style="padding: 20px">{{resource.name}}</td>
+                <td colspan="2" class="text-center" style="padding: 20px">{{resource?.name}}</td>
               </tr>
               <tr>
                 <td align="left" style="padding: 20px">On loan</td>
@@ -99,20 +99,20 @@
               </thead>
               <tr>
                 <td align="left" style="padding: 20px">Type</td>
-                <td colspan="2" class="text-center" style="padding: 20px;">{{resource.type}}</td>
+                <td colspan="2" class="text-center" style="padding: 20px;">{{resource?.type}}</td>
               </tr>
               <tr>
                 <td align="left" style="padding: 20px">State</td>
-                <td colspan="2" class="text-center" style="padding: 20px;">{{resource.state}}</td>
+                <td colspan="2" class="text-center" style="padding: 20px;">{{resource?.state}}</td>
               </tr>
               <tr>
                 <td align="left" style="padding: 20px">Add/Del Time</td>
-                <td class="text-center" style="padding: 20px;">{{resource.addTime}}</td>
-                <td class="text-center" style="padding: 20px;">{{resource.delTime}}</td>
+                <td class="text-center" style="padding: 20px;">{{resource?.addTime}}</td>
+                <td class="text-center" style="padding: 20px;">{{resource?.delTime}}</td>
               </tr>
               <tr>
                 <td style="width: 200px">
-                  <button type="button" class="btn btn-warning">PDF Info</button>
+                  <button (click)="getPDF(resource.id)" type="button" class="btn btn-warning">PDF Info</button>
                 </td>
                 <td style="width: 200px">
                   <button type="button" class="btn btn-warning">Add photo</button>
@@ -134,7 +134,7 @@
               </tr>
               </thead>
               <tr>
-                <td colspan="3" class="text-center" style="padding: 10px;height: 125px">{{resource.description}}</td>
+                <td colspan="3" class="text-center" style="padding: 10px;height: 125px">{{resource?.description}}</td>
               </tr>
               <tr>
                 <td class="text-center" style="padding: 50px">
@@ -223,9 +223,21 @@
         </div>
       </div>
     </div>
+    <button *ngIf="showPDF" (click)="hidePDF()" style="margin-top: -30px" type="button" class="btn btn-warning">CLOSE</button>
+    <div *ngIf="showPDF" class="pdf">
+      <pdf-viewer  [src]="pdfSrc"
+                [render-text]="true"
+                [original-size]="true"
+                 [show-all]="true"
+                 [stick-to-page]="true"
+                [fit-to-page]="true">
 
-    <app-user-res-detail *ngIf="displayEdit" style="margin-top: -400px"></app-user-res-detail>
+    </pdf-viewer>
+    </div>
+    <app-user-res-detail *ngIf="displayEdit"  style="margin-top: -400px"></app-user-res-detail>
   </div>
+
+
 
 </div>
 

@@ -11,7 +11,6 @@ export class TicketService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:8080'
     })
   };
   constructor(private http: HttpClient) { }
@@ -30,6 +29,18 @@ export class TicketService {
     return this.http.get<Ticket[]>(url, this.httpOptions);
   }
 
+  updateTicket(ticket: Ticket) {
+    const url = 'http://localhost:8080/ticket';
+    this.http.put<Ticket>(url, ticket, this.httpOptions).subscribe();
+  }
+  getTickets() {
+    const url = 'http://localhost:8080/tickets';
+    return this.http.get<Ticket[]>(url, this.httpOptions);
+  }
+  deleteTicket(id: number) {
+    const url = 'http://localhost:8080/ticket/' + id;
+    return this.http.delete(url).subscribe();
+  }
   getNotActiveTicketScrap() {
     const url = 'http://localhost:8080/ticket/notactive/scrap/';
     return this.http.get<Ticket[]>(url, this.httpOptions);

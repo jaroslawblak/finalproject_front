@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from '../../model/User.model';
 import {UserProfileService} from './user-profile.service';
+import {UserService} from '../../user.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -11,11 +12,13 @@ export class UserProfileComponent implements OnInit {
 
   user: User;
 
-  constructor(private userService: UserProfileService) { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
-    this.user = JSON.parse(sessionStorage.getItem('user'));
-    console.log(this.user);
+    this.userService.getUserByEmail(sessionStorage.getItem('user_email')).subscribe(user => {
+      this.user = user;
+      console.log(this.user);
+    });
   }
 
 }

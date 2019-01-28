@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Resource} from './model/Resource.model';
 import {BehaviorSubject} from 'rxjs';
 import {User} from './model/User.model';
@@ -29,6 +29,13 @@ export class UserService {
   getUser(param: number) {
     const url = 'http://localhost:8080/users/' + param;
     return this.http.get<User>(url, this.httpOptions);
+  }
+
+  getUserByEmail(param: string) {
+    const url = 'http://localhost:8080/users/email';
+    const body = new HttpParams().set('email', param);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json' )
+    return this.http.get<User>(url, {headers: headers, params: body});
   }
 
 

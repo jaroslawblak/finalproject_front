@@ -56,7 +56,8 @@ export class AdminPanelComponent implements OnInit {
       {id: 5, title: 'Places'},
       {id: 6, title: 'Resources-Categories'},
       {id: 7, title: 'Category'},
-      {id: 8, title: 'Children-of-resource'}
+      {id: 8, title: 'Children-of-resource'},
+      {id: 9, title: 'Tickets'}
     ];
 
     this.cols = [
@@ -85,13 +86,10 @@ export class AdminPanelComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.ticketService.getNotActiveTicketRent().subscribe(ticketsR => {
       this.notActiveTicketRent = ticketsR;
-      console.log(this.notActiveTicketRent);
       this.ticketService.getNotActiveTicketScrap().subscribe(ticketsS => {
         this.notActiveTicketScrap = ticketsS;
-        console.log(this.notActiveTicketScrap);
       });
     });
   }

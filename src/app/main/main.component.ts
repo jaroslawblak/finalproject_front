@@ -39,9 +39,8 @@ export class MainComponent implements OnInit {
 
   }
   logout = function () {
-    sessionStorage.removeItem('isLoggedIn');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('user_email');
     this.router.navigateByUrl('/login');
   };
 }

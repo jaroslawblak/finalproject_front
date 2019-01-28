@@ -2,93 +2,75 @@ import {Injectable} from '@angular/core';
 import {Observable, Observer} from 'rxjs';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {CookieService} from 'ngx-cookie-service';
+import {Login} from '../../model/login.model';
 
-export class LoginStatus {
-
-  constructor(state: string, description: string) {
-    this.state = state;
-    this.description = description;
-  }
-
-  state: string;
-  description: string;
-}
 
 @Injectable()
 export class AuthService {
   isLoggedIn: Observable<boolean>;
-  loginStatus: LoginStatus;
   private observer: Observer<boolean>;
   redirectUrl: string;
   serverUrl = 'http://localhost:8080';
 
-  constructor(private http: HttpClient, private router: Router, private Cookie: CookieService) {
+  constructor(private http: HttpClient, private router: Router) {
     this.isLoggedIn = new Observable(observer =>
       this.observer = observer
     );
   }
 
-  login(email: string, password: string): Observable<LoginStatus> {
-    let params = new HttpParams();
-    params.append('username', email);
-    params.append('password', password);
-    params.append('grant_type', 'password');
-    params.append('client_id', 'healthapp');
-    let headers = new HttpHeaders({
-      'Content-type': 'application/x-wwwform-urlencoded; charset=utf-8',
-      'Authorization': 'Basic ' +
-      btoa('healthapp:HeAltH@!23')
-    });
-    console.log(headers);
-    this.http.post('http://localhost:8080/oauth/token', null, {headers: headers, params: params})
-      .subscribe(
-        res => {
-          console.log(res);
-          // this.saveToken(res.json());
-          return new LoginStatus('SUCCESS', 'Login Successful');
-        },
-        err => {
-          console.log(err);
-          return new LoginStatus('FAILED', 'Login Failed');
+  login(login: Login) {
+    this.http.post<Observable<any>>(this.serverUrl + '/login', login, {observe: 'response'}).subscribe(
+      res => {
+        if (res.status === 202) {
+          this.getAccessToken(login);
+        } else {
+          alert('Invalid username or password!');
+          return false;
         }
-      );
-    return null;
+      }, err => {
+        alert('Invalid username or password!');
+        return false;
+      }
+    );
+    return false;
   }
 
-  //     });
-  //    } catch((error: any) => {
-  //        return Observable.of(new LoginStatus('FAILURE', 'Username or password is incorrect. Please try again!'));
-  //      });
-  // }
-  saveToken(token: any) {
-    let expireDate = new Date().getTime() + (1000 *
-      token.expires_in);
-    this.Cookie.set('access_token', token.access_token, expireDate);
-    this.Cookie.set('role', token.role);
-    this.changeLoginStatus(true);
-    if (token.role === 'ROLE_DOCTOR') {
-      this.router.navigate(['rx']);
-    } else {
-      this.router.navigate(['patient/home']);
-    }
+  getAccessToken(login: Login) {
+    let params = new HttpParams()
+      .set('username', login.email)
+      .set('password', login.password)
+      .set('grant_type', 'password');
+    let headers = new HttpHeaders({
+      'Content-type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' +
+      btoa('html5:password1'),
+    });
+    this.http.post('http://localhost:8080/oauth/token', params.toString(), {headers: headers, observe: 'response'}).subscribe(
+      res => {
+        let token = res.body.access_token;
+        sessionStorage.setItem('access_token', token);
+        sessionStorage.setItem('user_email', login.email);
+        this.router.navigateByUrl('main');
+
+      },
+      err => {
+        this.router.navigateByUrl('login');
+        console.log(err);
+      }
+    );
   }
 
-  checkCredentials() {
-    if (!this.Cookie.check('access_token')) {
+  checkCredentials(): boolean {
+    if (sessionStorage.getItem('access_token') == null) {
       this.router.navigate(['/login']);
+      return false;
+    } else {
+      return true;
     }
   }
 
   logout() {
-    this.Cookie.delete('access_token');
-    this.Cookie.delete('role');
-    this.changeLoginStatus(false);
-  }
-
-  changeLoginStatus(status: boolean) {
-    if (this.observer !== undefined) {
-      this.observer.next(status);
-    }
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('role');
   }
 }

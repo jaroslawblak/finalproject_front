@@ -9,6 +9,7 @@ import {NgForm} from '@angular/forms';
 import {Ticket} from '../../model/ticket.model';
 import {TicketService} from '../../ticket.service';
 import {Router} from '@angular/router';
+import {UserService} from '../../user.service';
 
 @Component({
   selector: 'app-ticket',
@@ -30,30 +31,33 @@ export class TicketComponent implements OnInit {
               private resourceService: ResourceService,
               private userResourceService: UserResourcesService,
               private ticketService: TicketService,
-              private router: Router) {
+              private router: Router,
+              private userService: UserService) {
     this.resources = [];
     this.selectedResource = [];
   }
 
   ngOnInit() {
-    this.user = JSON.parse(sessionStorage.getItem('user'));
-    this.dropdownSettings();
-    this.resourceService.getResources().subscribe(res => {
-      this.resources = res;
-      this.confirmationService.confirm({
-        message: 'Do you want a rent or scrap resource?',
-        accept: () => {
-          this.ticketRENT = true;
-          this.ticketSCRAP = false;
-        },
-        reject: () => {
-          this.resources = [];
-          this.ticketSCRAP = true;
-          this.ticketRENT = false;
-          this.resourceService.getResourcesForUser(this.user.id).subscribe(rese => {
-            this.resources = rese;
-          });
-        }
+    this.userService.getUserByEmail(sessionStorage.getItem('user_email')).subscribe(user => {
+      this.user = user;
+        this.dropdownSettings();
+      this.resourceService.getResources().subscribe(res => {
+        this.resources = res;
+        this.confirmationService.confirm({
+          message: 'Do you want a rent or scrap resource?',
+          accept: () => {
+            this.ticketRENT = true;
+            this.ticketSCRAP = false;
+          },
+          reject: () => {
+            this.resources = [];
+            this.ticketSCRAP = true;
+            this.ticketRENT = false;
+            this.resourceService.getResourcesForUser(this.user.id).subscribe(rese => {
+              this.resources = rese;
+            });
+          }
+        });
       });
     });
   }

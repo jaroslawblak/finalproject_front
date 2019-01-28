@@ -13,6 +13,7 @@ import {Ticket} from '../../model/ticket.model';
 import {UserService} from '../../user.service';
 import {ConfirmationService} from 'primeng/api';
 import {formatDate} from '@angular/common';
+import {PdfFileService} from '../../pdf-file.service';
 
 @Component({
   selector: 'app-user-table-info',
@@ -34,28 +35,33 @@ export class UserTableInfoComponent implements OnInit {
   displayNotCheckedTickets = false;
   displayCheckedTickets = false;
   notActiveTicketOwners: Ticket[];
-
+  pdfSrc: any;
+  showPDF = false;
   constructor(private userResourcesService: UserResourcesService,
               private resourceService: ResourceService,
               private categoryService: CategoryService,
               private infoTransferService: InfoTransferService,
               private ticketService: TicketService,
               private userService: UserService,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private pdfService: PdfFileService) {
     this.userResources = [];
     this.categories = [];
     this.resources = [];
     this.notActiveTicketOwners = [];
-    this.user = JSON.parse(sessionStorage.getItem('user'));
+    this.user = new User();
   }
 
   ngOnInit() {
-    this.resourceService.currentMessage.subscribe(id => this.id = id);
-    this.userResourcesService.getUserResourceForUser(this.user.id).subscribe(data => {
-      this.userResources = data;
-      this.loadResources(this.userResources);
+    this.userService.getUserByEmail(sessionStorage.getItem('user_email')).subscribe(user => {
+      this.user = user;
+      this.resourceService.currentMessage.subscribe(id => this.id = id);
+      this.userResourcesService.getUserResourceForUser(this.user.id).subscribe(data => {
+        this.userResources = data;
+        this.loadResources(this.userResources);
+      });
+      this.infoTransferService.displayEditState.subscribe(isActive => this.displayEdit = isActive);
     });
-    this.infoTransferService.displayEditState.subscribe(isActive => this.displayEdit = isActive);
   }
 
   removeEdit(id: number) {
@@ -132,9 +138,21 @@ export class UserTableInfoComponent implements OnInit {
   }
 
   getOpacity(): number {
-    if (this.displayEdit) {
+    if (this.displayEdit || this.showPDF) {
       return 0.5;
     }
+  }
+  hidePDF() {
+    this.showPDF = false;
+  }
+  getPDF(id: number) {
+    this.showPDF = true;
+    this.pdfSrc = null;
+    let fileURL = this.pdfService.getPdfFile(id).subscribe((response) => {
+      this.pdfSrc = response;
+      let file = new Blob([response], { type: 'application/pdf'});
+      let fileURL = URL.createObjectURL(file);
+    });
   }
 }
 
