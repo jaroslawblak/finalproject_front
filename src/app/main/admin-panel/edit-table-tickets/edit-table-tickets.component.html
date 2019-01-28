@@ -1,0 +1,307 @@
+<div class="container">
+  <p-dataView #dv [value]="tickets" [paginator]="true" [rows]="5" paginatorPosition="both" filterBy="firstName">
+    [sortField]="sortField" [sortOrder]="sortOrder">
+
+    <p-header>
+      <div class="ui-helper-clearfix">
+        <div class="ui-g">
+          <div class="ui-g-12 ui-md-4">
+            <span style="font-size: 24px; padding-top: 7px"> Ticket table info</span>
+          </div>
+          <div class="ui-g-6 ui-md-4 filter-container">
+            <div style="position:relative">
+              <input type="search" style="color: #1a1a1a" pInputText placeholder="Search by reporter name"
+                     (keyup)="dv.filter($event.target.value)">
+            </div>
+          </div>
+          <div class="ui-g-12 ui-md-3" style="text-align:right; padding-top: 7px">
+            <p-button label="ADD NEW" (onClick)="addNewTicket()"></p-button>
+          </div>
+          <div class="ui-g-6 ui-md-1" style="text-align:right">
+            <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+          </div>
+        </div>
+      </div>
+    </p-header>
+    <ng-template let-ticket pTemplate="listItem">
+      <div class="ui-g" style="padding: 2em;border-bottom: 1px solid #d9d9d9">
+        <div class="ui-g-12 ui-md-3" style="text-align:center; padding-top: 50px">
+          <img src="assets/images/Tickets.png" width="60">
+        </div>
+        <div class="ui-g-12 ui-md-6 car-details">
+          <div class="ui-g" style="font-size: 16px">
+            <div class="ui-g-2 ui-sm-6">Reporter:</div>
+            <div class="ui-g-10 ui-sm-6"><b>{{ticket?.firstName}} {{ticket?.lastName}}</b></div>
+
+            <div class="ui-g-2 ui-sm-6">Ticket type:</div>
+            <div class="ui-g-10 ui-sm-6"><b>{{getTicketType(ticket)}} </b></div>
+
+            <div class="ui-g-2 ui-sm-6">Resource:</div>
+            <div class="ui-g-10 ui-sm-6"><b>{{ticket?.resource?.name}}</b></div>
+
+            <div class="ui-g-2 ui-sm-6">Owner:</div>
+            <div class="ui-g-10 ui-sm-6"><b>{{ticket?.owner?.firstName}} {{ticket?.owner?.lastName}}</b></div>
+
+            <div class="ui-g-2 ui-sm-6">Date From:</div>
+            <div class="ui-g-10 ui-sm-6"><b>{{ticket?.dateFrom}}</b></div>
+
+            <div class="ui-g-2 ui-sm-6">Date To:</div>
+            <div class="ui-g-10 ui-sm-6"><b>{{ticket?.dateTo}}</b></div>
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+          <button pButton type="button" label="View" icon="pi pi-eye" (click)="selectTicket($event,ticket)"></button>
+        </div>
+        <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+          <button pButton type="button" label="Edit" icon="pi pi-pencil" (click)="editTicket($event,ticket)"></button>
+        </div>
+        <div class="ui-g-12 ui-md-1 search-icon" style="padding-top: 65px">
+          <button pButton type="button" label="Delete" icon="pi pi-times-circle"
+                  (click)="removeTicket($event,ticket)"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template let-ticket pTemplate="gridItem">
+      <div style="padding:.5em" class="ui-g-12 ui-md-3">
+        <p-panel [header]="ticket.firstName" [style]="{'text-align':'center'}">
+          <img src="assets/images/Tickets.png" width="60">
+          <!--<div class="car-detail">{{car.year}} - {{car.color}}</div>-->
+          <hr class="ui-widget-content" style="border-top:0">
+          <button pButton type="button" style="margin-right: 10px" label="View" icon="pi pi-eye"
+                  (click)="selectTicket($event,ticket)"></button>
+          <button pButton type="button" style="margin-right: 10px" label="Edit" icon="pi pi-pencil"
+                  (click)="editTicket($event,ticket)"></button>
+          <button pButton type="button" style="margin-top: 10px" label="Delete" icon="pi pi-times-circle"
+                  (click)="removeTicket($event,ticket)"></button>
+        </p-panel>
+      </div>
+    </ng-template>
+  </p-dataView>
+
+    <p-dialog header="Edit ticket" [(visible)]="displayEditDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style] = "{width: '225px'}"  (onAfterHide)="onDialogHide()">
+    <div class="ui-g" *ngIf="selectedTicket" style="width: 550px" >
+    <form ngNativeValidate  #editTicketForm="ngForm" ngNativeValidate (ngSubmit) = "saveEditedTicket(editTicketForm)">
+    <div class="ui-g" style="width: 550px" >
+    <div class="ui-g-12" style="text-align:center">
+    <img src="assets/images/Tickets.png" width="60">
+    </div>
+    <div class="form-group">
+    <div class="ui-g-2"><label style="margin-top: 5px">First name: </label></div>
+    <div class="ui-g-4">
+    <div class="ui-inputgroup">
+    <input name="firstName"id="firstName"  class="form-control"  type="text" required [(ngModel)]="this.selectedTicket.firstName">
+    </div>
+    </div>
+    <div class="ui-g-2"><label style="margin-top: 5px">Last name: </label></div>
+    <div class="ui-g-4">
+    <div class="ui-inputgroup">
+    <input name="lastName" id="lastName"  class="form-control"  type="text" required [(ngModel)]="this.selectedTicket.lastName">
+    </div>
+    </div>
+    <div class="ui-g-2"><label style="margin-top: 5px">Email: </label></div>
+    <div class="ui-g-4">
+    <div class="ui-inputgroup">
+    <input name="email" id="email"  class="form-control"  type="text" required [(ngModel)]="this.selectedTicket.email">
+    </div>
+    </div>
+    <div class="ui-g-2"><label style="margin-top: 5px">Tel: </label></div>
+    <div class="ui-g-4">
+    <div class="ui-inputgroup">
+    <input name="password" id="tel"  class="form-control"  type="text"  [(ngModel)]="this.selectedTicket.tel">
+    </div>
+    </div>
+    <div class="ui-g-2"><label style="margin-top: 5px">Type: </label></div>
+    <div class="ui-g-4">
+    <div class="ui-inputgroup">
+    <input name="type" id="type"  class="form-control"  type="number" min="0" max="1" required [(ngModel)]="this.selectedTicket.type" >
+    </div>
+    </div>
+    <div class="ui-g-2"><label style="margin-top: 5px">Active: </label></div>
+    <div class="ui-g-4">
+    <div class="ui-inputgroup">
+    <input name="active" id="active"  class="form-control"  type="number" min="0" max="1" required [(ngModel)]="this.selectedTicket.active">
+    </div></div>
+    <div class="ui-g-2"><label style="margin-top: 5px">Date From: </label></div>
+    <div class="ui-g-4">
+    <div class="ui-inputgroup">
+    <input name="dateFrom" id="dateFrom"  class="form-control"  type="date" [(ngModel)]="this.selectedTicket.dateFrom" >
+    </div>
+    </div>
+      <div class="ui-g-2"><label style="margin-top: 5px">Date To: </label></div>
+      <div class="ui-g-4">
+        <div class="ui-inputgroup">
+          <input name="dateTo" id="dateTo"  class="form-control"  type="date" [(ngModel)]="this.selectedTicket.dateTo" >
+        </div>
+      </div>
+      <div class="ui-g-6"></div>
+      <div class="ui-g-12"></div>
+    <div class="ui-g-4"><label style="margin-top: 5px">User: </label></div>
+    <div class="ui-g-8">
+        <ng-multiselect-dropdown *ngIf="users!= null"
+                                [placeholder]="'Choose a user'"
+                                [data]="users"
+                                [(ngModel)]="this.selectedUser"
+                                name="selectedUser"
+                                [settings]="DropdownSettings">
+        </ng-multiselect-dropdown>
+    </div>
+      <div *ngIf="this.selectedTicket.type == 1" class="ui-g-4"><label style="margin-top: 5px">Owner: </label></div>
+      <div *ngIf="this.selectedTicket.type == 1" class="ui-g-8">
+        <ng-multiselect-dropdown *ngIf="users!= null"
+                                 [placeholder]="'Choose a owner'"
+                                 [data]="users"
+                                 [(ngModel)]="this.selectedOwner"
+                                 name="selectedOwner"
+                                 [settings]="DropdownSettings">
+        </ng-multiselect-dropdown>
+      </div>
+      <div class="ui-g-4"><label style="margin-top: 5px">Resource: </label></div>
+      <div class="ui-g-8">
+        <ng-multiselect-dropdown *ngIf="resources!= null"
+                                 [placeholder]="'Choose a resource'"
+                                 [data]="resources"
+                                 [(ngModel)]="this.selectedResources"
+                                 name="selectedResources"
+                                 [settings]="DropdownResourceSettings">
+        </ng-multiselect-dropdown>
+      </div>
+    <div class="ui-g-2"><label style="margin-top: 5px">Note: </label></div>
+    <div class="ui-g-10">
+    <div class="ui-inputgroup">
+    <textarea name="note"[(ngModel)]="this.selectedTicket.note"  class="form-control" rows="5" cols="50">{{this.selectedTicket.note}}</textarea>
+    </div>
+    </div>
+    </div>
+    <div class="ui-g-6" style="margin-top: 15px">
+    </div>
+    <div class="ui-g-6" style="margin-top: 15px">
+    <button pButton type="submit" style="float: right; margin-right: 50px; height: 30px" label="Update" (onClick)="saveEditedTicket(editTicketForm)"></button>
+    </div>
+    </div>
+    </form>
+    </div>
+    </p-dialog>
+
+  <p-dialog header="Ticket Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"
+            [style]="{width: '225px'}" (onAfterHide)="onDialogHide()">
+    <div class="ui-g" *ngIf="selectedTicket" style="width: 700px">
+      <div class="ui-g-6">
+        <div class="ui-g">
+          <img src="assets/images/Tickets.png" width="60"  height="80" style="margin: 0 auto;">
+        </div>
+
+        <div class="ui-g">
+        <div class="ui-g-4">ID:</div>
+        <div class="ui-g-8">{{selectedTicket?.id}}</div>
+      </div>
+
+        <div class="ui-g">
+        <div class="ui-g-4">First name:</div>
+        <div class="ui-g-8">{{selectedTicket.firstName}}</div>
+      </div>
+
+        <div class="ui-g">
+        <div class="ui-g-4">Last name:</div>
+        <div class="ui-g-8">{{selectedTicket.lastName}}</div>
+      </div>
+
+        <div class="ui-g">
+        <div class="ui-g-4">Email:</div>
+        <div class="ui-g-8">{{selectedTicket.email}}</div>
+        </div>
+        <div class="ui-g">
+        <div class="ui-g-4">Tel:</div>
+        <div class="ui-g-8">{{selectedTicket.tel}}</div>
+      </div>
+
+        <div class="ui-g">
+          <div class="ui-g-4">Type:</div>
+          <div class="ui-g-8">{{getTicketType(selectedTicket)}}</div>
+        </div>
+
+        <div class="ui-g">
+          <div class="ui-g-4">Active:</div>
+          <div class="ui-g-8">{{selectedTicket.active}}</div>
+        </div>
+
+        <div class="ui-g">
+          <div class="ui-g-4">Add Time:</div>
+          <div class="ui-g-8">{{selectedTicket.addTime}}</div>
+        </div>
+
+        <div class="ui-g">
+          <div class="ui-g-4">Date From:</div>
+          <div class="ui-g-8">{{selectedTicket.dateFrom}}</div>
+        </div>
+
+        <div class="ui-g">
+          <div class="ui-g-4">Date To:</div>
+          <div class="ui-g-8">{{selectedTicket.dateTo}}</div>
+        </div>
+
+        <div class="ui-g">
+          <div class="ui-g-4">Owner:</div>
+          <div class="ui-g-8">{{selectedTicket?.owner?.firstName}} {{selectedTicket?.owner?.lastName}}</div>
+        </div>
+
+        <div class="ui-g">
+          <div class="ui-g-4">Resource:</div>
+          <div class="ui-g-8">{{selectedTicket?.resource?.name}}</div>
+        </div>
+      </div>
+
+      <div class="ui-g-6" style="text-align:center">
+        <div class="ui-g">
+          <img src="assets/images/user.png" width="60"  height="70" style="margin: 0 auto;">
+        </div>
+        <div class="ui-g">
+        <div class="ui-g-4">Reporter:</div>
+        <div class="ui-g-8">{{selectedTicket?.user?.firstName}} {{selectedTicket?.user?.lastName}}</div>
+      </div>
+        <div class="ui-g">
+        <div class="ui-g-4">Email:</div>
+        <div class="ui-g-8">{{selectedTicket?.user?.email}}</div>
+      </div>
+        <div class="ui-g">
+        <div class="ui-g-4">Type:</div>
+        <div class="ui-g-8">{{selectedTicket?.user?.type}}</div>
+      </div>
+        <div class="ui-g">
+        <div class="ui-g-4">State:</div>
+        <div class="ui-g-8">{{selectedTicket?.user?.state}}</div>
+      </div>
+          <div class="ui-g">
+          <div class="ui-g-4">Role:</div>
+          <div class="ui-g-8">{{selectedTicket?.user?.role}}</div>
+          </div>
+        <div class="ui-g">
+          <img src="assets/images/user.png" width="60"  height="70" style="margin: 0 auto;">
+        </div>
+        <div class="ui-g">
+        <div class="ui-g-4">Owner:</div>
+        <div class="ui-g-8">{{selectedTicket?.owner?.firstName}} {{selectedTicket?.owner?.lastName}}</div>
+        </div>
+        <div class="ui-g">
+        <div class="ui-g-4">Email:</div>
+        <div class="ui-g-8">{{selectedTicket?.owner?.email}}</div>
+        </div>
+        <div class="ui-g">
+        <div class="ui-g-4">Type:</div>
+        <div class="ui-g-8">{{selectedTicket?.owner?.type}}</div>
+        </div>
+        <div class="ui-g">
+        <div class="ui-g-4">State:</div>
+        <div class="ui-g-8">{{selectedTicket?.owner?.state}}</div>
+        </div>
+        <div class="ui-g">
+        <div class="ui-g-4">Role:</div>
+        <div class="ui-g-8">{{selectedTicket?.owner?.role}}</div>
+        </div>
+      </div>
+    </div>
+
+  </p-dialog>
+
+  <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+
+</div>
